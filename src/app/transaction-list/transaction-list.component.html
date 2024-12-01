@@ -1,0 +1,24 @@
+<div class="transaction-list">
+    <!-- Check if there are any transactions -->
+    <div *ngIf="transactions.length === 0" class="no-transactions">
+      <h2>No transactions available</h2>
+      <p>There are no transactions to display.</p>
+    </div>
+  
+    <!-- Display grouped transactions -->
+    <div *ngIf="transactions.length > 0">
+      <div *ngFor="let group of groupedTransactions" class="transaction-group">
+        <h2 class="group-header">{{ group.date }}</h2>
+        <div *ngFor="let transaction of group.transactions">
+          <app-transaction [transaction]="transaction"></app-transaction>
+        </div>
+      </div>
+  
+      <div class="load-more-container" *ngIf="hasMoreTransactions()">
+        <button class="load-more-button" (click)="loadMore()">Load More</button>
+      </div>
+  
+      <p class="no-more-transactions" *ngIf="!hasMoreTransactions()">No More Transactions</p>
+    </div>
+  </div>
+  

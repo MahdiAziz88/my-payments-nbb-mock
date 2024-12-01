@@ -1,0 +1,21 @@
+<div class="transaction-container">
+    <!-- Icon Section -->
+    <!-- <div class="icon">
+      <img src="assets/icons/{{ transaction.transactionType }}.svg" alt="Transaction Icon" />
+    </div> -->
+  
+    <!-- Details Section -->
+    <div class="details">
+      <p class="from">From <b>{{ transaction.accountName }}</b></p>
+      <p class="to">To {{ transaction.beneficiaryIBAN }}</p>
+    </div>
+  
+    <!-- Status and Amount Section -->
+    <div class="status-amount-container">
+      <div class="status">
+        <span [ngClass]="transaction.status.toLowerCase()">{{ transaction.status }}</span>
+      </div>
+      <p class="amount">-{{ transaction.transactionAmount }}</p>
+    </div>
+  </div>
+  
