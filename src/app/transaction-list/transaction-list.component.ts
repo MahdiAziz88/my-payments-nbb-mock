@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Transaction } from '../interfaces';
 import { TransactionService } from '../transaction.service';
 
@@ -8,7 +8,7 @@ import { TransactionService } from '../transaction.service';
   styleUrls: ['./transaction-list.component.css']
 })
 export class TransactionListComponent implements OnInit {
-  transactions: Transaction[] = [];
+  @Input() transactions: Transaction[] = [];
   groupedTransactions: { date: string; transactions: Transaction[] }[] = [];
   currentPage = 1; // Current page for pagination
   itemsPerPage = 5; // Number of transactions to load per page

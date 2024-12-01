@@ -1,2 +1,24 @@
 <h1>My Payments</h1>
-<router-outlet></router-outlet>
+<div>
+  <!-- Tabs -->
+  <div class="tabs">
+    <button
+      routerLink="/my-payments/history"
+      routerLinkActive="active"
+      class="tab-button"
+    >
+      Payment History
+    </button>
+    <button
+      routerLink="/my-payments/upcoming"
+      routerLinkActive="active"
+      class="tab-button"
+    >
+      Upcoming Payments
+    </button>
+  </div>
+
+  <!-- Router Outlet -->
+  <router-outlet></router-outlet>
+</div>
+
