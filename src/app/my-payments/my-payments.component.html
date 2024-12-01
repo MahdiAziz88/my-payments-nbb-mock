@@ -1,4 +1,27 @@
 <div class="my-payments-container">
-    <app-transaction-list></app-transaction-list>
+  <!-- Tabs -->
+  <div class="tabs">
+    <button
+      (click)="switchTab('history')"
+      [class.active]="activeTab === 'history'"
+      class="tab-button"
+    >
+      Payment History
+    </button>
+    <button
+      (click)="switchTab('upcoming')"
+      [class.active]="activeTab === 'upcoming'"
+      class="tab-button"
+    >
+      Upcoming Payments
+    </button>
   </div>
-  
+
+  <!-- Content based on active tab -->
+  <div *ngIf="activeTab === 'history'">
+    <app-payment-history></app-payment-history>
+  </div>
+  <div *ngIf="activeTab === 'upcoming'">
+    <app-upcoming-payments></app-upcoming-payments>
+  </div>
+</div>

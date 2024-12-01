@@ -13,6 +13,7 @@ import { TransactionDetailsModalComponent } from './transaction-details-modal/tr
 import { TransactionSearchComponent } from './transaction-search/transaction-search.component';
 import { TransactionFilterComponent } from './transaction-filter/transaction-filter.component';
 import { UpcomingPaymentsComponent } from './upcoming-payments/upcoming-payments.component';
+import { PaymentHistoryComponent } from './payment-history/payment-history.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { UpcomingPaymentsComponent } from './upcoming-payments/upcoming-payments
     TransactionDetailsModalComponent,
     TransactionSearchComponent,
     TransactionFilterComponent,
-    UpcomingPaymentsComponent
+    UpcomingPaymentsComponent,
+    PaymentHistoryComponent
   ],
   imports: [
     BrowserModule,
