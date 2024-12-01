@@ -1,1 +1,56 @@
-<p>transaction-details-modal works!</p>
+<div class="modal fade show" tabindex="-1" role="dialog" style="display: block;">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Transaction Details</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Transaction Type:</strong> {{ transaction?.transactionType }}</p>
+          <p><strong>Status:</strong> {{ transaction?.status }}</p>
+          <p><strong>Amount:</strong> {{ transaction?.transactionAmount }}</p>
+          <p><strong>Transaction Date:</strong> {{ transaction?.transactionInitiationDate }}</p>
+          <p><strong>From Account:</strong> {{ transaction?.accountName }}</p>
+          <p><strong>Transaction Reference:</strong> {{ transaction?.referenceNumber }}</p>
+  
+          <!-- Reason for Failure (Only if the transaction status is Failed) -->
+          <p *ngIf="transaction?.status === 'Rejected'">
+            <strong>Reason:</strong> {{ transaction?.rejectionDescription }}
+          </p>
+  
+          <p><strong>Transaction Channel:</strong> {{ transaction?.initiatingChannel }}</p>
+          <p><strong>Beneficiary Name:</strong> {{ transaction?.beneficiaryName }}</p>
+  
+          <!-- Beneficiary IBAN and BIC (Hidden for Fawateer transactions) -->
+          <p *ngIf="transaction?.transactionType !== 'FT'">
+            <strong>Beneficiary IBAN:</strong> {{ transaction?.beneficiaryIBAN }}
+          </p>
+          <p *ngIf="transaction?.transactionType !== 'FT'">
+            <strong>Beneficiary BIC:</strong> {{ transaction?.beneficiaryBIC }}
+          </p>
+  
+          <!-- Fawateer-specific fields (Hidden if null/empty) -->
+          <p *ngIf="transaction?.billerCode">
+            <strong>Biller Code:</strong> {{ transaction?.billerCode }}
+          </p>
+          <p *ngIf="transaction?.billerServiceCode">
+            <strong>Biller Service Code:</strong> {{ transaction?.billerServiceCode }}
+          </p>
+          <p *ngIf="transaction?.billerSubServiceCode">
+            <strong>Biller Sub Service Code:</strong> {{ transaction?.billerSubServiceCode }}
+          </p>
+          <p *ngIf="transaction?.billerSubscriberType">
+            <strong>Biller Subscriber Type:</strong> {{ transaction?.billerSubscriberType }}
+          </p>
+          <p *ngIf="transaction?.billerSubscriberIDNumber">
+            <strong>Biller Subscriber ID:</strong> {{ transaction?.billerSubscriberIDNumber }}
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="onClose()">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+  

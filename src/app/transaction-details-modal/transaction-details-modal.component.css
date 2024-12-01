@@ -1,0 +1,59 @@
+/* Ensure the modal is centered */
+.modal-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center horizontally and vertically */
+    max-width: 600px;
+    border-radius: 8px;
+    z-index: 1050; /* Ensure it's above other elements */
+  }
+
+  /* Add the dark backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+  z-index: 1040; /* Below the modal */
+}
+  
+  /* Set the modal to display in front of the backdrop */
+  .modal-content {
+    position: relative;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  /* Optional: Add padding to the modal body */
+  .modal-body {
+    padding: 20px;
+  }
+  
+  /* Modal header styling */
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  .modal-header .btn-close {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  /* Modal footer */
+  .modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #e5e5e5;
+    display: flex;
+    justify-content: flex-end;
+  }
+  

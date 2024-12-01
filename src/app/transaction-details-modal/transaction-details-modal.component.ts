@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Transaction } from '../interfaces';
 
 @Component({
   selector: 'app-transaction-details-modal',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./transaction-details-modal.component.css']
 })
 export class TransactionDetailsModalComponent implements OnInit {
+  @Input() transaction!: Transaction;
+  @Output() close = new EventEmitter<void>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  onClose(): void {
+    this.close.emit();
   }
-
 }

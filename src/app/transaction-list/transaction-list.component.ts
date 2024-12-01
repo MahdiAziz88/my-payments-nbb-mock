@@ -10,8 +10,10 @@ import { TransactionService } from '../transaction.service';
 export class TransactionListComponent implements OnInit {
   transactions: Transaction[] = [];
   groupedTransactions: { date: string; transactions: Transaction[] }[] = [];
-  currentPage = 1; // Current page for pagination
-  itemsPerPage = 5; // Number of transactions to load per page
+  currentPage = 1;
+  itemsPerPage = 5;
+
+  selectedTransaction: Transaction | null = null; // Store the currently selected transaction
 
   constructor(private transactionService: TransactionService) {}
 
@@ -22,7 +24,7 @@ export class TransactionListComponent implements OnInit {
   getTransactions(): void {
     this.transactionService.getTransactions().subscribe((data: Transaction[]) => {
       if (data.length === 0) {
-        this.transactions = []; // Handle no transactions case
+        this.transactions = [];
       } else {
         this.transactions = this.sortTransactionsByDate(data);
         this.paginateTransactions();
@@ -34,7 +36,7 @@ export class TransactionListComponent implements OnInit {
     return transactions.sort((a, b) => {
       const dateA = this.parseDate(a.transactionInitiationDate).getTime();
       const dateB = this.parseDate(b.transactionInitiationDate).getTime();
-      return dateB - dateA; // Most recent first
+      return dateB - dateA;
     });
   }
 
@@ -66,7 +68,7 @@ export class TransactionListComponent implements OnInit {
 
   parseDate(dateString: string): Date {
     const day = parseInt(dateString.slice(0, 2), 10);
-    const month = parseInt(dateString.slice(2, 4), 10) - 1; // Month is 0-indexed
+    const month = parseInt(dateString.slice(2, 4), 10) - 1;
     const year = parseInt(dateString.slice(4), 10);
     return new Date(year, month, day);
   }
@@ -94,5 +96,15 @@ export class TransactionListComponent implements OnInit {
 
   hasMoreTransactions(): boolean {
     return this.currentPage * this.itemsPerPage < this.transactions.length;
+  }
+
+  // Handle selecting a transaction
+  openTransactionDetails(transaction: Transaction): void {
+    this.selectedTransaction = transaction;
+  }
+
+  // Handle closing transaction details
+  closeTransactionDetails(): void {
+    this.selectedTransaction = null;
   }
 }
