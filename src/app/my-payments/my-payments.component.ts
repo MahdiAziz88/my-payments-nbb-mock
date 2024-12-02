@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-my-payments',
   templateUrl: './my-payments.component.html',
   styleUrls: ['./my-payments.component.css']
 })
-export class MyPaymentsComponent implements OnInit {
+export class MyPaymentsComponent {
+  searchTerm = ''; // Stores the search term for the list
 
-  constructor() { }
-
-  ngOnInit(): void {
+  // Update search term when the user triggers a search
+  onSearchTermChanged(term: string): void {
+    this.searchTerm = term;
   }
-
 }

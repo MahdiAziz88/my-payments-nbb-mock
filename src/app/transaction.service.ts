@@ -31,26 +31,6 @@ export class TransactionService {
     );
   }
 
-  searchTransactions(debitAccount: string, beneficiaryIBAN: string, billerSubscriberIDNumber: string): Observable<Transaction[]> {
-    if (!debitAccount.trim() && !beneficiaryIBAN.trim() && !billerSubscriberIDNumber.trim()) {
-      return of([]);
-    }
-    let query = `${this.transactionsUrl}/?`;
-    if (debitAccount.trim()) {
-      query += `debitAccount=${debitAccount}&`;
-    }
-    if (beneficiaryIBAN.trim()) {
-      query += `beneficiaryIBAN=${beneficiaryIBAN}`;
-    }
-    if (billerSubscriberIDNumber.trim()) { 
-      query += `billerSubscriberIDNumber=${billerSubscriberIDNumber}`;
-    }
-    return this.http.get<Transaction[]>(query)
-    .pipe(
-      tap(() => console.log(`Found Transactions matching debitAccount "${debitAccount}" and beneficiaryIBAN "${beneficiaryIBAN}"`)),
-      catchError(this.handleError<Transaction[]>('searchTransactions', []))
-    );
-  }
 
 // Error handler
 private handleError<T>(operation = 'operation', result?: T) {

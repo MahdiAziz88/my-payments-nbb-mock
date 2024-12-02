@@ -1,10 +1,18 @@
 <div class="transaction-list">
+  <!-- No Transactions Available Message -->
   <div *ngIf="transactions.length === 0" class="no-transactions">
     <h2>No transactions available</h2>
     <p>There are no transactions to display.</p>
   </div>
 
-  <div *ngIf="transactions.length > 0">
+  <!-- Search Results Message -->
+  <div *ngIf="transactions.length > 0 && filteredTransactions.length === 0" class="no-transactions">
+    <h2>No Transactions Found</h2>
+    <p>No Results. Please try again with a different keyword.</p>
+  </div>
+
+  <!-- Existing Transaction List Logic -->
+  <div *ngIf="filteredTransactions.length > 0">
     <div *ngFor="let group of groupedTransactions" class="transaction-group">
       <h2 class="group-header">{{ group.date }}</h2>
       <div *ngFor="let transaction of group.transactions">
@@ -15,6 +23,7 @@
       </div>
     </div>
 
+    <!-- Load More Button -->
     <div class="load-more-container" *ngIf="hasMoreTransactions()">
       <button class="load-more-button" (click)="loadMore()">Load More</button>
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Transaction } from '../interfaces';
 import { TransactionService } from '../transaction.service';
 
@@ -10,10 +10,13 @@ import { TransactionService } from '../transaction.service';
 export class TransactionListComponent implements OnInit {
   transactions: Transaction[] = [];
   groupedTransactions: { date: string; transactions: Transaction[] }[] = [];
+  filteredTransactions: Transaction[] = [];
   currentPage = 1;
   itemsPerPage = 5;
 
-  selectedTransaction: Transaction | null = null; // Store the currently selected transaction
+  selectedTransaction: Transaction | null = null;
+
+  @Input() searchTerm = ''; // Receives the search term from the parent
 
   constructor(private transactionService: TransactionService) {}
 
@@ -21,15 +24,42 @@ export class TransactionListComponent implements OnInit {
     this.getTransactions();
   }
 
+  ngOnChanges(): void {
+    this.filterTransactions(); // Apply the search term whenever it changes
+  }
+
   getTransactions(): void {
     this.transactionService.getTransactions().subscribe((data: Transaction[]) => {
       if (data.length === 0) {
         this.transactions = [];
+        this.filteredTransactions = [];
       } else {
         this.transactions = this.sortTransactionsByDate(data);
+        this.filteredTransactions = [...this.transactions]; // Initialize filtered transactions
         this.paginateTransactions();
       }
     });
+  }
+
+  filterTransactions(): void {
+    if (!this.searchTerm.trim()) {
+      this.filteredTransactions = [...this.transactions];
+    } else {
+      const term = this.searchTerm.toLowerCase();
+      this.filteredTransactions = this.transactions.filter(transaction => {
+        const beneficiaryName = transaction.beneficiaryName?.toLowerCase() || '';
+        const debitAccount = transaction.debitAccount?.toString() || '';
+        const billerSubscriberIDNumber = transaction.billerSubscriberIDNumber?.toLowerCase() || '';
+        
+        return (
+          beneficiaryName.includes(term) ||
+          debitAccount.includes(term) ||
+          billerSubscriberIDNumber.includes(term)
+        );
+      });
+    }
+    this.currentPage = 1; // Reset pagination
+    this.paginateTransactions();
   }
 
   sortTransactionsByDate(transactions: Transaction[]): Transaction[] {
@@ -44,7 +74,7 @@ export class TransactionListComponent implements OnInit {
     const start = 0;
     const end = this.currentPage * this.itemsPerPage;
 
-    const paginatedTransactions = this.transactions.slice(start, end);
+    const paginatedTransactions = this.filteredTransactions.slice(start, end);
     this.groupTransactionsByDate(paginatedTransactions);
   }
 
@@ -95,15 +125,13 @@ export class TransactionListComponent implements OnInit {
   }
 
   hasMoreTransactions(): boolean {
-    return this.currentPage * this.itemsPerPage < this.transactions.length;
+    return this.currentPage * this.itemsPerPage < this.filteredTransactions.length;
   }
 
-  // Handle selecting a transaction
   openTransactionDetails(transaction: Transaction): void {
     this.selectedTransaction = transaction;
   }
 
-  // Handle closing transaction details
   closeTransactionDetails(): void {
     this.selectedTransaction = null;
   }
