@@ -12,7 +12,6 @@ import { TransactionListComponent } from './transaction-list/transaction-list.co
 import { TransactionDetailsModalComponent } from './transaction-details-modal/transaction-details-modal.component';
 import { TransactionSearchComponent } from './transaction-search/transaction-search.component';
 import { TransactionFilterComponent } from './transaction-filter/transaction-filter.component';
-import { UpcomingPaymentsComponent } from './upcoming-payments/upcoming-payments.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +22,6 @@ import { UpcomingPaymentsComponent } from './upcoming-payments/upcoming-payments
     TransactionDetailsModalComponent,
     TransactionSearchComponent,
     TransactionFilterComponent,
-    UpcomingPaymentsComponent
   ],
   imports: [
     BrowserModule,

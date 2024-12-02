@@ -1,59 +1,128 @@
-/* Ensure the modal is centered */
+/* Modal Dialog */
 .modal-dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Center horizontally and vertically */
-    max-width: 600px;
-    border-radius: 8px;
-    z-index: 1050; /* Ensure it's above other elements */
-  }
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 500px;
+  width: 100%;
+  border-radius: 8px;
+  z-index: 1050;
+  background-color: #fff;
+}
 
-  /* Add the dark backdrop */
+/* Modal Backdrop */
 .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
-  z-index: 1040; /* Below the modal */
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
 }
-  
-  /* Set the modal to display in front of the backdrop */
-  .modal-content {
-    position: relative;
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  /* Optional: Add padding to the modal body */
-  .modal-body {
-    padding: 20px;
-  }
-  
-  /* Modal header styling */
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #e5e5e5;
-  }
-  
-  .modal-header .btn-close {
-    background: transparent;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-  }
-  
-  /* Modal footer */
-  .modal-footer {
-    padding: 15px 20px;
-    border-top: 1px solid #e5e5e5;
-    display: flex;
-    justify-content: flex-end;
-  }
-  
+
+/* Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: none;
+  padding: 20px;
+}
+
+.modal-header .header-info {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+}
+
+.modal-header h5 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
+}
+
+.modal-header .date {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.modal-header .btn-close {
+  background: transparent;
+  border: none;
+  font-size: 36px;
+  color: #555;
+  cursor: pointer;
+}
+
+.modal-header .btn-close:hover {
+  color: #000;
+}
+
+/* Status */
+.status {
+  margin-bottom: 15px;
+  padding-left: 20px;
+}
+
+.status span {
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 12px;
+  color: #fff;
+}
+
+.status .approved {
+  background-color: #00884b;
+}
+
+.status .rejected {
+  background-color: #ba293a;
+}
+
+.status .pending {
+  background-color: #ecb02b;
+}
+
+/* Amount */
+.amount {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  margin: 20px ;
+}
+
+/* Body */
+.modal-body {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  padding-left: 20px;
+}
+
+/* Detail Rows */
+.detail {
+  padding: 10px 0;
+  border-bottom: 2px solid #d2d8dc;
+}
+
+.detail:last-child {
+  border-bottom: none;
+}
+
+.detail .label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.detail .value {
+  font-size: 14px;
+  color: #666;
+}

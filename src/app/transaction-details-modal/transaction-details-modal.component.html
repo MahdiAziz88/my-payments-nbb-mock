@@ -1,56 +1,80 @@
 <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Transaction Details</h5>
-          <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="header-info">
+          <h5 class="modal-title">From {{ transaction?.accountName }}</h5>
+          <p class="date">{{ transaction?.transactionInitiationDate }}</p>
         </div>
-        <div class="modal-body">
-          <p><strong>Transaction Type:</strong> {{ transaction?.transactionType }}</p>
-          <p><strong>Status:</strong> {{ transaction?.status }}</p>
-          <p><strong>Amount:</strong> {{ transaction?.transactionAmount }}</p>
-          <p><strong>Transaction Date:</strong> {{ transaction?.transactionInitiationDate }}</p>
-          <p><strong>From Account:</strong> {{ transaction?.accountName }}</p>
-          <p><strong>Transaction Reference:</strong> {{ transaction?.referenceNumber }}</p>
-  
-          <!-- Reason for Failure (Only if the transaction status is Failed) -->
-          <p *ngIf="transaction?.status === 'Rejected'">
-            <strong>Reason:</strong> {{ transaction?.rejectionDescription }}
-          </p>
-  
-          <p><strong>Transaction Channel:</strong> {{ transaction?.initiatingChannel }}</p>
-          <p><strong>Beneficiary Name:</strong> {{ transaction?.beneficiaryName }}</p>
-  
-          <!-- Beneficiary IBAN and BIC (Hidden for Fawateer transactions) -->
-          <p *ngIf="transaction?.transactionType !== 'FT'">
-            <strong>Beneficiary IBAN:</strong> {{ transaction?.beneficiaryIBAN }}
-          </p>
-          <p *ngIf="transaction?.transactionType !== 'FT'">
-            <strong>Beneficiary BIC:</strong> {{ transaction?.beneficiaryBIC }}
-          </p>
-  
-          <!-- Fawateer-specific fields (Hidden if null/empty) -->
-          <p *ngIf="transaction?.billerCode">
-            <strong>Biller Code:</strong> {{ transaction?.billerCode }}
-          </p>
-          <p *ngIf="transaction?.billerServiceCode">
-            <strong>Biller Service Code:</strong> {{ transaction?.billerServiceCode }}
-          </p>
-          <p *ngIf="transaction?.billerSubServiceCode">
-            <strong>Biller Sub Service Code:</strong> {{ transaction?.billerSubServiceCode }}
-          </p>
-          <p *ngIf="transaction?.billerSubscriberType">
-            <strong>Biller Subscriber Type:</strong> {{ transaction?.billerSubscriberType }}
-          </p>
-          <p *ngIf="transaction?.billerSubscriberIDNumber">
-            <strong>Biller Subscriber ID:</strong> {{ transaction?.billerSubscriberIDNumber }}
-          </p>
+        <!-- Close Button -->
+        <button type="button" class="btn-close" aria-label="Close" (click)="onClose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- Status -->
+      <div class="status">
+        <span [ngClass]="transaction.status.toLowerCase()">
+          {{ transaction.status }}
+        </span>
+      </div>
+
+      <!-- Amount -->
+      <div class="amount">
+        BHD - {{ transaction?.transactionAmount }}
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <!-- Details Section -->
+        <div class="detail">
+          <div class="label">From Account Number</div>
+          <div class="value">{{ transaction?.debitAccount }}</div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="onClose()">Back</button>
+        <div class="detail" *ngIf="transaction?.status === 'Rejected'">
+          <div class="label">Reason of Transaction Failure</div>
+          <div class="value">{{ transaction?.rejectionDescription }}</div>
         </div>
+        <div class="detail">
+          <div class="label">Transaction Channel</div>
+          <div class="value">{{ transaction?.initiatingChannel }}</div>
+        </div>
+        <div class="detail">
+          <div class="label">Beneficiary Name</div>
+          <div class="value">{{ transaction?.beneficiaryName }}</div>
+        </div>
+        <div class="detail" *ngIf="transaction?.transactionType !== 'FT'">
+          <div class="label">Beneficiary IBAN</div>
+          <div class="value">{{ transaction?.beneficiaryIBAN }}</div>
+        </div>
+        <div class="detail" *ngIf="transaction?.transactionType !== 'FT'">
+          <div class="label">Beneficiary BIC</div>
+          <div class="value">{{ transaction?.beneficiaryBIC }}</div>
+        </div>
+        <!-- Fawateer-specific fields (Hidden if null/empty) -->
+        <div class="detail" *ngIf="transaction?.billerCode">
+          <div class="label">Biller Code</div>
+          <div class="value">{{ transaction?.billerCode }}</div>
+        </div>
+        <div class="detail" *ngIf="transaction?.billerServiceCode">
+          <div class="label">Biller Service Code</div>
+          <div class="value">{{ transaction?.billerServiceCode }}</div>
+        </div>
+        <div class="detail" *ngIf="transaction?.billerSubServiceCode">
+          <div class="label">Biller Sub Service Code</div>
+          <div class="value">{{ transaction?.billerSubServiceCode }}</div>
+        </div>
+        <div class="detail" *ngIf="transaction?.billerSubscriberType">
+          <div class="label">Biller Subscriber Type</div>
+          <div class="value">{{ transaction?.billerSubscriberType }}</div>
+        </div>
+        <!-- <div class="detail" *ngIf="transaction?.billerSubscriberIDNumber">
+          <div class="label">Biller Subscriber ID</div>
+          <div class="value">{{ transaction?.billerSubscriberIDNumber }}</div>
+        </div> -->
       </div>
     </div>
   </div>
-  <div class="modal-backdrop fade show"></div>
-  
+</div>
+<div class="modal-backdrop fade show"></div>

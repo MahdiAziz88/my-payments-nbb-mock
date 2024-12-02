@@ -1,84 +1,88 @@
 .transaction-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .icon {
-    margin-right: 10px; /* Space between the icon and details */
-  }
-  
-  .icon img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%; /* Circular icon */
-  }
-  
-  .details {
-    flex: 1; /* Take up remaining space */
-  }
-  
-  .from,
-  .to {
-    margin: 0;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .from b,
-  .to b {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .status-amount-container {
-    display: flex;
-    align-items: center;
-    gap: 20px; /* Space between status and amount */
-  }
-  
-  .status {
-    text-align: center;
-    font-size: 12px;
-  }
-  
-  .status span {
-    display: inline-block;
-    width: 100px;
-    text-align: center;
-    padding: 5px 10px;
-    border-radius: 15px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: bold;
-  }
-  
-  .status .approved {
-    background-color: #00884b;
-    color: #ffffff;
-  }
-  
-  .status .rejected {
-    background-color: #ba293a;
-    color: #ffffff;
-  }
-  
-  .status .pending {
-    background-color: #ecb02b;
-    color: #ffffff;
-  }
-  
-  .amount {
-    font-size: 16px;
-    font-weight: bold;
-    color: #bb2c3d;
-    text-align: right;
-    min-width: 75px;
-  }
-  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1.5px solid #ddd; /* Add borders around each transaction */
+  border-top: none; /* Remove top border to stack seamlessly */
+  box-shadow: #555;
+  padding: 10px 20px;
+  background-color: #fff;
+  cursor: pointer; /* Make the cursor indicate the transaction is clickable */
+}
+
+/* Keep the border on the last transaction */
+.transaction-container:first-child {
+  border-top: 1px solid #ddd; /* Ensure the first transaction has a top border */
+}
+
+.icon {
+  margin-right: 10px; /* Space between the icon and details */
+}
+
+.icon img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* Circular icon */
+}
+
+.details {
+  flex: 1; /* Take up remaining space */
+}
+
+.from,
+.to {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.from b,
+.to b {
+  font-weight: bold;
+  color: #333;
+}
+
+.status-amount-container {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Space between status and amount */
+}
+
+.status {
+  text-align: center;
+  font-size: 12px;
+}
+
+.status span {
+  display: inline-block;
+  width: 100px;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.status .approved {
+  background-color: #00884b;
+  color: #ffffff;
+}
+
+.status .rejected {
+  background-color: #ba293a;
+  color: #ffffff;
+}
+
+.status .pending {
+  background-color: #ecb02b;
+  color: #ffffff;
+}
+
+.amount {
+  font-size: 16px;
+  font-weight: bold;
+  color: #bb2c3d;
+  text-align: right;
+  min-width: 75px;
+}
