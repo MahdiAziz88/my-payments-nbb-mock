@@ -20,20 +20,32 @@
   
   .search-bar input:focus {
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-    border-color: #5f5f5f; 
+    border-color: #5f5f5f;
   }
   
-  .search-bar button {
-    display: none; /* Hide the button if not needed */
+  .search-bar .search-button {
+    position: absolute;
+    left: 10px; /* Adjust position to align within input padding */
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: none;
+    outline: none;
+    cursor: pointer;
+    color: #aaa;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
-  .search-bar::before {
+  .search-bar .search-button::before {
     content: '\f002'; /* Font Awesome search icon */
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
-    position: absolute;
-    left: 15px;
-    font-size: 18px;
-    color: #aaa;
+  }
+  
+  .search-bar .search-button:hover {
+    color: #5f5f5f; /* Change icon color on hover */
   }
   
