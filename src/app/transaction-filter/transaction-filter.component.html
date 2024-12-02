@@ -1,1 +1,22 @@
-<p>transaction-filter works!</p>
+<div class="filter-container">
+    <div class="date-filter">
+      <label>From Date:</label>
+      <input type="date" [(ngModel)]="fromDate">
+      <label>To Date:</label>
+      <input type="date" [(ngModel)]="toDate">
+    </div>
+    <div class="type-filter">
+      <label>Transaction Type:</label>
+      <select [(ngModel)]="transactionType">
+        <option value="All">All</option>
+        <option value="Fawri">Fawri Transfers</option>
+        <option value="FawriPlus">Fawri+ Transfers</option>
+        <option value="Fawateer">Fawateer Payments</option>
+      </select>
+    </div>
+    <div class="filter-actions">
+      <button (click)="applyFilter()">Apply</button>
+      <button (click)="clearFilter()">Clear</button>
+    </div>
+  </div>
+  

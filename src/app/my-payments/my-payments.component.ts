@@ -6,10 +6,18 @@ import { Component } from '@angular/core';
   styleUrls: ['./my-payments.component.css']
 })
 export class MyPaymentsComponent {
-  searchTerm = ''; // Stores the search term for the list
+  searchTerm = '';
+  filterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' };
 
-  // Update search term when the user triggers a search
   onSearchTermChanged(term: string): void {
     this.searchTerm = term;
+  }
+
+  onFilterApplied(criteria: { fromDate: string; toDate: string; type: string }): void {
+    this.filterCriteria = criteria;
+  }
+
+  onFilterCleared(): void {
+    this.filterCriteria = { fromDate: '', toDate: '', type: 'All' };
   }
 }

@@ -1,3 +1,6 @@
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
 <div class="transaction-list">
   <!-- No Transactions Available Message -->
   <div *ngIf="transactions.length === 0" class="no-transactions">

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { Transaction } from '../interfaces';
 import { TransactionService } from '../transaction.service';
 
@@ -7,7 +7,7 @@ import { TransactionService } from '../transaction.service';
   templateUrl: './transaction-list.component.html',
   styleUrls: ['./transaction-list.component.css']
 })
-export class TransactionListComponent implements OnInit {
+export class TransactionListComponent implements OnInit, OnChanges {
   transactions: Transaction[] = [];
   groupedTransactions: { date: string; transactions: Transaction[] }[] = [];
   searchedTransactions: Transaction[] = [];
@@ -15,8 +15,10 @@ export class TransactionListComponent implements OnInit {
   itemsPerPage = 5;
 
   selectedTransaction: Transaction | null = null;
+  errorMessage: string | null = null; // To display validation error messages
 
-  @Input() searchTerm = ''; // Receives the search term from the parent
+  @Input() searchTerm = '';
+  @Input() filterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' };
 
   constructor(private transactionService: TransactionService) {}
 
@@ -25,7 +27,7 @@ export class TransactionListComponent implements OnInit {
   }
 
   ngOnChanges(): void {
-    this.searchTransactions(); // Apply the search term whenever it changes
+    this.filterTransactions();
   }
 
   getTransactions(): void {
@@ -35,18 +37,36 @@ export class TransactionListComponent implements OnInit {
         this.searchedTransactions = [];
       } else {
         this.transactions = this.sortTransactionsByDate(data);
-        this.searchedTransactions = [...this.transactions]; // Initialize searched transactions
-        this.paginateTransactions();
+        this.filterTransactions(); // Apply filters after fetching transactions
       }
     });
   }
 
-  searchTransactions(): void {
-    if (!this.searchTerm.trim()) {
-      this.searchedTransactions = [...this.transactions];
-    } else {
+  filterTransactions(): void {
+    this.errorMessage = null; // Reset error messages
+
+    if (this.filterCriteria.fromDate && this.filterCriteria.toDate) {
+      const fromDate = new Date(this.filterCriteria.fromDate);
+      const toDate = new Date(this.filterCriteria.toDate);
+
+      // Validation: Check if the date range exceeds one month
+      const maxRangeDate = new Date(fromDate);
+      maxRangeDate.setMonth(maxRangeDate.getMonth() + 1);
+
+      if (toDate > maxRangeDate) {
+        this.errorMessage = 'Date range cannot exceed one month.';
+        this.searchedTransactions = [];
+        this.groupedTransactions = [];
+        return;
+      }
+    }
+
+    let filtered = [...this.transactions];
+
+    // Apply search term filter
+    if (this.searchTerm.trim()) {
       const term = this.searchTerm.toLowerCase();
-      this.searchedTransactions = this.transactions.filter(transaction => {
+      filtered = filtered.filter(transaction => {
         const beneficiaryName = transaction.beneficiaryName?.toLowerCase() || '';
         const debitAccount = transaction.debitAccount?.toString() || '';
         const billerSubscriberIDNumber = transaction.billerSubscriberIDNumber?.toLowerCase() || '';
@@ -58,6 +78,29 @@ export class TransactionListComponent implements OnInit {
         );
       });
     }
+
+    // Apply date range filter
+    if (this.filterCriteria.fromDate && this.filterCriteria.toDate) {
+      const fromDate = new Date(this.filterCriteria.fromDate);
+      const toDate = new Date(this.filterCriteria.toDate);
+      filtered = filtered.filter(transaction => {
+        const transactionDate = this.parseDate(transaction.transactionInitiationDate);
+        return transactionDate >= fromDate && transactionDate <= toDate;
+      });
+    }
+
+    // Apply transaction type filter
+    if (this.filterCriteria.type !== 'All') {
+      const typeMapping: { [key: string]: string } = {
+        Fawri: 'FA',
+        FawriPlus: 'FP',
+        Fawateer: 'FT'
+      };
+      const selectedType = typeMapping[this.filterCriteria.type];
+      filtered = filtered.filter(transaction => transaction.transactionType === selectedType);
+    }
+
+    this.searchedTransactions = filtered;
     this.currentPage = 1; // Reset pagination
     this.paginateTransactions();
   }

@@ -1,4 +1,11 @@
 <div class="my-payments-container">
   <app-transaction-search (searchTermChanged)="onSearchTermChanged($event)"></app-transaction-search>
-  <app-transaction-list [searchTerm]="searchTerm"></app-transaction-list>
+  <app-transaction-filter
+    (filterApplied)="onFilterApplied($event)"
+    (filterCleared)="onFilterCleared()"
+  ></app-transaction-filter>
+  <app-transaction-list
+    [searchTerm]="searchTerm"
+    [filterCriteria]="filterCriteria"
+  ></app-transaction-list>
 </div>
