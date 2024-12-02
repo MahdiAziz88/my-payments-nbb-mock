@@ -10,7 +10,7 @@ import { TransactionService } from '../transaction.service';
 export class TransactionListComponent implements OnInit {
   transactions: Transaction[] = [];
   groupedTransactions: { date: string; transactions: Transaction[] }[] = [];
-  filteredTransactions: Transaction[] = [];
+  searchedTransactions: Transaction[] = [];
   currentPage = 1;
   itemsPerPage = 5;
 
@@ -25,28 +25,28 @@ export class TransactionListComponent implements OnInit {
   }
 
   ngOnChanges(): void {
-    this.filterTransactions(); // Apply the search term whenever it changes
+    this.searchTransactions(); // Apply the search term whenever it changes
   }
 
   getTransactions(): void {
     this.transactionService.getTransactions().subscribe((data: Transaction[]) => {
       if (data.length === 0) {
         this.transactions = [];
-        this.filteredTransactions = [];
+        this.searchedTransactions = [];
       } else {
         this.transactions = this.sortTransactionsByDate(data);
-        this.filteredTransactions = [...this.transactions]; // Initialize filtered transactions
+        this.searchedTransactions = [...this.transactions]; // Initialize searched transactions
         this.paginateTransactions();
       }
     });
   }
 
-  filterTransactions(): void {
+  searchTransactions(): void {
     if (!this.searchTerm.trim()) {
-      this.filteredTransactions = [...this.transactions];
+      this.searchedTransactions = [...this.transactions];
     } else {
       const term = this.searchTerm.toLowerCase();
-      this.filteredTransactions = this.transactions.filter(transaction => {
+      this.searchedTransactions = this.transactions.filter(transaction => {
         const beneficiaryName = transaction.beneficiaryName?.toLowerCase() || '';
         const debitAccount = transaction.debitAccount?.toString() || '';
         const billerSubscriberIDNumber = transaction.billerSubscriberIDNumber?.toLowerCase() || '';
@@ -74,7 +74,7 @@ export class TransactionListComponent implements OnInit {
     const start = 0;
     const end = this.currentPage * this.itemsPerPage;
 
-    const paginatedTransactions = this.filteredTransactions.slice(start, end);
+    const paginatedTransactions = this.searchedTransactions.slice(start, end);
     this.groupTransactionsByDate(paginatedTransactions);
   }
 
@@ -125,7 +125,7 @@ export class TransactionListComponent implements OnInit {
   }
 
   hasMoreTransactions(): boolean {
-    return this.currentPage * this.itemsPerPage < this.filteredTransactions.length;
+    return this.currentPage * this.itemsPerPage < this.searchedTransactions.length;
   }
 
   openTransactionDetails(transaction: Transaction): void {
