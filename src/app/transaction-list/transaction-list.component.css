@@ -91,19 +91,21 @@
 }
 
 .load-more-button {
-  padding: 10px 20px;
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 10px 24px; /* Adjust padding for a rounded shape */
+  background-color: #dde4e9; /* Light gray background */
+  border: none; /* Remove border */
+  border-radius: 25px; /* Fully rounded corners */
   cursor: pointer;
-  font-size: 14px;
-  color: #333;
-  transition: background-color 0.3s;
+  font-size: 16px; /* Slightly larger font */
+  font-weight: bold; /* Bold text */
+  color: #000; /* Black text */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition on hover */
 }
 
 .load-more-button:hover {
-  background-color: #e0e0e0;
+  background-color: #adadad; /* Slightly darker gray on hover */
 }
+
 
 .no-more-transactions {
   font-size: 14px;
