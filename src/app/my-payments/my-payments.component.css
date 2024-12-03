@@ -1,6 +1,5 @@
 .my-payments-container {
   padding: 20px;
-  font-family: Arial, sans-serif;
 } 
 /* Container for Search and Filter Buttons */
 .search-filter-container {
@@ -13,7 +12,6 @@
 /* My Payments Container */
 .my-payments-container {
   padding: 20px;
-  font-family: Arial, sans-serif;
 }
 
 /* Filter Button */
@@ -21,11 +19,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px; /* Matches the padding of the search bar */
-  height: 40px; /* Match search bar height */
-  background-color: #e8edf3;
+  padding: 10px 20px;
+  height: 40px;
+  background-color: #e8edf3; /* Default background color */
   border: none;
-  border-radius: 25px; /* Matches the rounded corners of the search bar */
+  border-radius: 25px;
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
@@ -35,15 +33,17 @@
 
 /* Filter Button Icon */
 .filter-button i {
-  font-size: 18px; /* Font Awesome filter icon size */
-  margin-right: 8px; /* Space between icon and text */
-  color: #5f5f5f; /* Neutral icon color */
+  font-size: 18px;
+  margin-right: 8px;
+  color: #5f5f5f;
 }
 
+/* Hover State */
 .filter-button:hover {
-  background-color: #d9e3eb; /* Slightly darker on hover */
+  background-color: #d9e3eb;
 }
 
-.filter-button:active {
-  background-color: #8686868a; /* Even darker for active state */
+/* Active Filter Button State */
+.filter-button.active {
+  background-color: #b3b8bd; /* Background color when filters are visible */
 }

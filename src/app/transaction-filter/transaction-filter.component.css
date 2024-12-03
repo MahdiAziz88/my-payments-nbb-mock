@@ -60,6 +60,10 @@
     color: #b3b7bd; /* Light gray text */
   }
 
+  .filter-actions .clear-button:hover {
+    color: #e32636; /* Dark gray text on hover */
+  }
+
   .filter-actions .clear-button.red-text {
     color: #e32636; /* Bright red text when changes are detected */
   }
@@ -72,7 +76,7 @@
   }
 
   .filter-actions .close-button:hover {
-    background-color: #d9e3eb;
+    background-color: #949494;
   }
   
   /* Apply Button */

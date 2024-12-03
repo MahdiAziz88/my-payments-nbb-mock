@@ -3,22 +3,34 @@
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
-        <div class="header-info">
-          <h5 class="modal-title">From {{ transaction?.accountName }}</h5>
-          <p class="date">{{ transaction?.transactionInitiationDate }}</p>
+        <div class="header-info-container">
+          <!-- Type Circle -->
+          <div
+            class="type-circle"
+            [ngClass]="transaction?.transactionType || 'default'"
+          >
+            {{ transaction?.transactionType || 'N/A' }}
+          </div>
+      
+          <!-- Details Section -->
+          <div class="header-info">
+            <p class="modal-title">From <b>{{ transaction?.accountName }}</b></p>
+            <p class="date">{{ transaction?.transactionInitiationDate }}</p>
+            <!-- Status -->
+            <div class="status">
+              <span [ngClass]="transaction?.status ? transaction.status.toLowerCase() : 'unknown'">
+                {{ transaction?.status || 'Unknown' }}
+              </span>
+            </div>
+          </div>
         </div>
+      
         <!-- Close Button -->
         <button type="button" class="btn-close" aria-label="Close" (click)="onClose()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-
-      <!-- Status -->
-      <div class="status">
-        <span [ngClass]="transaction.status.toLowerCase()">
-          {{ transaction.status }}
-        </span>
-      </div>
+      
 
       <!-- Amount -->
       <div class="amount">
@@ -69,10 +81,6 @@
           <div class="label">Biller Subscriber Type</div>
           <div class="value">{{ transaction?.billerSubscriberType }}</div>
         </div>
-        <!-- <div class="detail" *ngIf="transaction?.billerSubscriberIDNumber">
-          <div class="label">Biller Subscriber ID</div>
-          <div class="value">{{ transaction?.billerSubscriberIDNumber }}</div>
-        </div> -->
       </div>
     </div>
   </div>

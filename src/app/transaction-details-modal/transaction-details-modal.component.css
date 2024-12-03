@@ -11,6 +11,14 @@
   background-color: #fff;
 }
 
+/* Flex container for the circle and details */
+.header-info-container {
+  display: flex;
+  align-items: center; /* Align circle and details vertically */
+  gap: 20px; /* Space between the circle and details */
+  flex: 1; /* Allow the container to stretch */
+}
+
 /* Modal Backdrop */
 .modal-backdrop {
   position: fixed;
@@ -21,6 +29,39 @@
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1040;
 }
+
+/* Type Circle */
+.type-circle {
+  width: 60px; /* Increased size */
+  height: 60px; /* Increased size */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px; /* Slightly larger text */
+  font-weight: bold;
+  color: #fff; /* White text */
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Specific Colors Based on Transaction Type */
+.type-circle.FP {
+  background-color: #7c4182; /* Fawri+ */
+}
+
+.type-circle.FA {
+  background-color: #f88d2b; /* Fawri */
+}
+
+.type-circle.FT {
+  background-color: #00839b; /* Fawateer */
+}
+
+/* Default Fallback Color */
+.type-circle.default {
+  background-color: #ccc; /* Neutral gray */
+}
+
 
 /* Header */
 .modal-header {
@@ -44,7 +85,8 @@
   color: #000;
 }
 
-.modal-header .date {
+/* Date */
+.header-info .date {
   font-size: 14px;
   color: #666;
   margin: 0;
@@ -64,8 +106,7 @@
 
 /* Status */
 .status {
-  margin-bottom: 15px;
-  padding-left: 20px;
+  margin-top: 10px;
 }
 
 .status span {
@@ -73,9 +114,10 @@
   padding: 5px 15px;
   border-radius: 20px;
   text-transform: uppercase;
+  letter-spacing: 1px;
   font-weight: bold;
   font-size: 12px;
-  color: #fff;
+  color: #fff; /* White text */
 }
 
 .status .approved {
@@ -90,6 +132,11 @@
   background-color: #ecb02b;
 }
 
+.status .unknown {
+  background-color: #aaa; /* Neutral gray */
+  color: #fff;
+}
+
 /* Amount */
 .amount {
   font-size: 24px;
@@ -101,7 +148,6 @@
 /* Body */
 .modal-body {
   padding: 20px;
-  font-family: Arial, sans-serif;
   padding-left: 20px;
 }
 

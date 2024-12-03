@@ -4,7 +4,10 @@
     <app-transaction-search (searchTermChanged)="onSearchTermChanged($event)"></app-transaction-search>
 
     <!-- Filter Button -->
-    <button class="filter-button" (click)="toggleFilters()">
+    <button 
+      class="filter-button" 
+      [ngClass]="{ 'active': showFilters }" 
+      (click)="toggleFilters()">
       <i class="fas fa-sliders-h"></i> Filter
     </button>
   </div>
