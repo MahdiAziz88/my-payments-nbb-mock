@@ -113,15 +113,36 @@
   margin-top: 10px;
 }
 
-.no-transactions {
+.error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 50px 0;
   text-align: center;
-  margin-top: 50px;
-  font-size: 18px;
-  color: #666;
+  color: #6c757d; /* Subtle gray text */
 }
 
-.no-transactions h2 {
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
+.error-message img {
+  width: 200px; /* Medium width for the image */
+  height: 200px; /* Medium height for the image */
+  margin-bottom: 16px;
+  object-fit: contain; /* Maintain aspect ratio */
 }
+
+
+.error-message h2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000; /* Primary text color */
+  margin-bottom: 8px; /* Space between title and subtitle */
+}
+
+.error-message p {
+  font-size: 14px;
+  font-weight: normal;
+  color: #6c757d; /* Subtle gray for subtitle */
+  margin: 0;
+  line-height: 1.5;
+}
+

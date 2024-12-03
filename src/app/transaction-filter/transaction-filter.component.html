@@ -1,22 +1,47 @@
-<div class="filter-container">
+<div class="filter-inputs-container">
+  <div class="filter-inputs">
     <div class="date-filter">
-      <label>From Date:</label>
-      <input type="date" [(ngModel)]="fromDate">
-      <label>To Date:</label>
-      <input type="date" [(ngModel)]="toDate">
+      <label for="fromDate">From</label>
+      <input type="date" id="fromDate" [(ngModel)]="fromDate" (change)="checkChanges()">
     </div>
+
+    <div class="date-filter">
+      <label for="toDate">To</label>
+      <input type="date" id="toDate" [(ngModel)]="toDate" (change)="checkChanges()">
+    </div>
+
     <div class="type-filter">
-      <label>Transaction Type:</label>
-      <select [(ngModel)]="transactionType">
+      <label for="transactionType">Transaction Type</label>
+      <select id="transactionType" [(ngModel)]="transactionType" (change)="checkChanges()">
         <option value="All">All</option>
-        <option value="Fawri">Fawri Transfers</option>
-        <option value="FawriPlus">Fawri+ Transfers</option>
-        <option value="Fawateer">Fawateer Payments</option>
+        <option value="FA">Fawri Transfers</option>
+        <option value="FP">Fawri+ Transfers</option>
+        <option value="FT">Fawateer Payments</option>
       </select>
     </div>
-    <div class="filter-actions">
-      <button (click)="applyFilter()">Apply</button>
-      <button (click)="clearFilter()">Clear</button>
-    </div>
   </div>
-  
+
+  <!-- Action Buttons -->
+  <div class="filter-actions">
+    <button
+      class="clear-button"
+      [class.red-text]="hasChanges"
+      (click)="clearFilter()"
+    >
+      Clear all
+    </button>
+    <button
+      class="close-button"
+      (click)="closeFilters()"
+    >
+      Close
+    </button>
+    <button
+      class="apply-button"
+      [class.red-button]="hasChanges"
+      (click)="applyFilter()"
+    >
+      Apply
+    </button>
+  </div>
+</div>

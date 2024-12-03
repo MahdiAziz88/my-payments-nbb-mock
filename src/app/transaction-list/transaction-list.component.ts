@@ -15,7 +15,7 @@ export class TransactionListComponent implements OnInit, OnChanges {
   itemsPerPage = 5;
 
   selectedTransaction: Transaction | null = null;
-  errorMessage: string | null = null; // To display validation error messages
+  errorMessage: { title: string; subtitle: string } | null = null; // To display validation error messages
 
   @Input() searchTerm = '';
   @Input() filterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' };
@@ -44,67 +44,99 @@ export class TransactionListComponent implements OnInit, OnChanges {
 
   filterTransactions(): void {
     this.errorMessage = null; // Reset error messages
-
-    if (this.filterCriteria.fromDate && this.filterCriteria.toDate) {
-      const fromDate = new Date(this.filterCriteria.fromDate);
-      const toDate = new Date(this.filterCriteria.toDate);
-
-      // Validation: Check if the date range exceeds one month
-      const maxRangeDate = new Date(fromDate);
-      maxRangeDate.setMonth(maxRangeDate.getMonth() + 1);
-
-      if (toDate > maxRangeDate) {
-        this.errorMessage = 'Date range cannot exceed one month.';
+    let messageTitle = ''; // Separate variable for the title
+    let messageSubtitle = ''; // Separate variable for the subtitle
+    let filtered = [...this.transactions];
+  
+    try {
+      // Handle global case: No transactions exist
+      if (this.transactions.length === 0) {
+        messageTitle = 'No Transactions Available';
+        messageSubtitle = 'There are no transactions to display.';
+        this.errorMessage = { title: messageTitle, subtitle: messageSubtitle }; // Set global error message
         this.searchedTransactions = [];
         this.groupedTransactions = [];
         return;
       }
-    }
-
-    let filtered = [...this.transactions];
-
-    // Apply search term filter
-    if (this.searchTerm.trim()) {
-      const term = this.searchTerm.toLowerCase();
-      filtered = filtered.filter(transaction => {
-        const beneficiaryName = transaction.beneficiaryName?.toLowerCase() || '';
-        const debitAccount = transaction.debitAccount?.toString() || '';
-        const billerSubscriberIDNumber = transaction.billerSubscriberIDNumber?.toLowerCase() || '';
-        
-        return (
-          beneficiaryName.includes(term) ||
-          debitAccount.includes(term) ||
-          billerSubscriberIDNumber.includes(term)
-        );
-      });
-    }
-
-    // Apply date range filter
-    if (this.filterCriteria.fromDate && this.filterCriteria.toDate) {
-      const fromDate = new Date(this.filterCriteria.fromDate);
-      const toDate = new Date(this.filterCriteria.toDate);
-      filtered = filtered.filter(transaction => {
-        const transactionDate = this.parseDate(transaction.transactionInitiationDate);
-        return transactionDate >= fromDate && transactionDate <= toDate;
-      });
-    }
-
-    // Apply transaction type filter
-    if (this.filterCriteria.type !== 'All') {
-      const typeMapping: { [key: string]: string } = {
-        Fawri: 'FA',
-        FawriPlus: 'FP',
-        Fawateer: 'FT'
+  
+      // Apply date range filter if both dates are provided
+      if (this.filterCriteria.fromDate && this.filterCriteria.toDate) {
+        const fromDate = new Date(this.filterCriteria.fromDate);
+        const toDate = new Date(this.filterCriteria.toDate);
+  
+        // Validation: Ensure "from" date is not after "to" date
+        if (fromDate > toDate) {
+          messageTitle = 'Invalid Date Range';
+          messageSubtitle = '"From" date cannot be after "To" date.';
+          this.errorMessage = { title: messageTitle, subtitle: messageSubtitle };
+          this.searchedTransactions = [];
+          this.groupedTransactions = [];
+          return;
+        }
+  
+        // Validation: Ensure date range doesn't exceed one month
+        const maxRangeDate = new Date(fromDate);
+        maxRangeDate.setMonth(maxRangeDate.getMonth() + 1);
+        if (toDate > maxRangeDate) {
+          messageTitle = 'Invalid Date Range';
+          messageSubtitle = 'Date range cannot exceed one month.';
+          this.errorMessage = { title: messageTitle, subtitle: messageSubtitle };
+          this.searchedTransactions = [];
+          this.groupedTransactions = [];
+          return;
+        }
+  
+        filtered = filtered.filter(transaction => {
+          const transactionDate = this.parseDate(transaction.transactionInitiationDate);
+          return transactionDate >= fromDate && transactionDate <= toDate;
+        });
+      }
+  
+      // Apply transaction type filter if a specific type is selected
+      if (this.filterCriteria.type !== 'All') {
+        filtered = filtered.filter(transaction => transaction.transactionType === this.filterCriteria.type);
+      }
+  
+      // Apply search term filter
+      if (this.searchTerm.trim()) {
+        const term = this.searchTerm.toLowerCase();
+        filtered = filtered.filter(transaction => {
+          const beneficiaryName = transaction.beneficiaryName?.toLowerCase() || '';
+          const debitAccount = transaction.debitAccount?.toString() || '';
+          const billerSubscriberIDNumber = transaction.billerSubscriberIDNumber?.toLowerCase() || '';
+  
+          return (
+            beneficiaryName.includes(term) ||
+            debitAccount.includes(term) ||
+            billerSubscriberIDNumber.includes(term)
+          );
+        });
+      }
+  
+      // Handle no matching transactions after all filters
+      if (filtered.length === 0) {
+        messageTitle = 'No Transactions Found';
+        messageSubtitle = 'You do not have any transaction within the selected date range or the transaction type.';
+      }
+  
+      // Update message or transactions
+      this.errorMessage = filtered.length === 0 ? { title: messageTitle, subtitle: messageSubtitle } : null;
+      this.searchedTransactions = filtered;
+      this.currentPage = 1; // Reset pagination
+      this.paginateTransactions();
+    } catch (error) {
+      // General validation in case of any unexpected errors
+      this.errorMessage = {
+        title: 'An Error Occurred',
+        subtitle: 'Something went wrong while applying the filters. Please try again later.'
       };
-      const selectedType = typeMapping[this.filterCriteria.type];
-      filtered = filtered.filter(transaction => transaction.transactionType === selectedType);
+      this.searchedTransactions = [];
+      this.groupedTransactions = [];
     }
-
-    this.searchedTransactions = filtered;
-    this.currentPage = 1; // Reset pagination
-    this.paginateTransactions();
   }
-
+  
+  
+  
   sortTransactionsByDate(transactions: Transaction[]): Transaction[] {
     return transactions.sort((a, b) => {
       const dateA = this.parseDate(a.transactionInitiationDate).getTime();

@@ -1,11 +1,26 @@
 <div class="my-payments-container">
-  <app-transaction-search (searchTermChanged)="onSearchTermChanged($event)"></app-transaction-search>
+  <!-- Search and Filter Buttons -->
+  <div class="search-filter-container">
+    <app-transaction-search (searchTermChanged)="onSearchTermChanged($event)"></app-transaction-search>
+
+    <!-- Filter Button -->
+    <button class="filter-button" (click)="toggleFilters()">
+      <i class="fas fa-sliders-h"></i> Filter
+    </button>
+  </div>
+
+  <!-- Filter Component -->
   <app-transaction-filter
-    (filterApplied)="onFilterApplied($event)"
-    (filterCleared)="onFilterCleared()"
-  ></app-transaction-filter>
+  *ngIf="showFilters"
+  (filterApplied)="onFilterApplied($event)"
+  (filterCleared)="onFilterCleared()"
+  (filterClosed)="closeFilters()">
+</app-transaction-filter>
+
+
+  <!-- Transaction List -->
   <app-transaction-list
     [searchTerm]="searchTerm"
-    [filterCriteria]="filterCriteria"
-  ></app-transaction-list>
+    [filterCriteria]="filterCriteria">
+  </app-transaction-list>
 </div>

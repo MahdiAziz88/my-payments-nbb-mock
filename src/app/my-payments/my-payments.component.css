@@ -2,3 +2,48 @@
   padding: 20px;
   font-family: Arial, sans-serif;
 } 
+/* Container for Search and Filter Buttons */
+.search-filter-container {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Space between search and filter buttons */
+  margin-bottom: 12px;
+}
+
+/* My Payments Container */
+.my-payments-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Filter Button */
+.filter-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px; /* Matches the padding of the search bar */
+  height: 40px; /* Match search bar height */
+  background-color: #e8edf3;
+  border: none;
+  border-radius: 25px; /* Matches the rounded corners of the search bar */
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  transition: background-color 0.3s ease;
+}
+
+/* Filter Button Icon */
+.filter-button i {
+  font-size: 18px; /* Font Awesome filter icon size */
+  margin-right: 8px; /* Space between icon and text */
+  color: #5f5f5f; /* Neutral icon color */
+}
+
+.filter-button:hover {
+  background-color: #d9e3eb; /* Slightly darker on hover */
+}
+
+.filter-button:active {
+  background-color: #8686868a; /* Even darker for active state */
+}
