@@ -2,49 +2,52 @@
 .filter-inputs-container {
     display: flex;
     flex-direction: column;
-    gap: 16px; /* Spacing between inputs and action buttons */
+    gap: 16px;
+    /* Spacing between inputs and action buttons */
     margin-top: 16px;
-  }
-  
-  /* Filter Inputs */
-  .filter-inputs {
+}
+
+/* Filter Inputs */
+.filter-inputs {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px; /* Spacing between individual filters */
-  }
-  
-  .date-filter,
-  .type-filter {
+    gap: 24px;
+    /* Spacing between individual filters */
+}
+
+.date-filter,
+.type-filter {
     display: flex;
     flex-direction: column;
     gap: 4px;
-  }
-  
-  .date-filter label,
-  .type-filter label {
+}
+
+.date-filter label,
+.type-filter label {
     font-size: 14px;
     font-weight: bold;
     color: #333;
-  }
-  
-  input[type="date"],
-  select {
+}
+
+input[type="date"],
+select {
     padding: 8px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
     max-width: 200px;
     background-color: #fff;
-  }
-  
-  /* Filter Action Buttons */
-  .filter-actions {
+}
+
+/* Filter Action Buttons */
+.filter-actions {
     display: flex;
     gap: 12px;
-    justify-content: flex-start; /* Align buttons to the left */
-  }
-  
-  .filter-actions button {
+    justify-content: flex-start;
+    /* Align buttons to the left */
+}
+
+.filter-actions button {
     padding: 8px 16px;
     border: none;
     border-radius: 8px;
@@ -52,51 +55,59 @@
     cursor: pointer;
     transition: background-color 0.3s;
     font-weight: bold;
-  }
-  
-  /* Clear Button */
-  .filter-actions .clear-button {
+}
+
+/* Clear Button */
+.filter-actions .clear-button {
     background-color: transparent;
-    color: #b3b7bd; /* Light gray text */
-  }
+    color: #b3b7bd;
+    /* Light gray text */
+}
 
-  .filter-actions .clear-button:hover {
-    color: #e32636; /* Dark gray text on hover */
-  }
+.filter-actions .clear-button:hover {
+    color: #e32636;
+    /* Dark gray text on hover */
+}
 
-  .filter-actions .clear-button.red-text {
-    color: #e32636; /* Bright red text when changes are detected */
-  }
-  
+.filter-actions .clear-button.red-text {
+    color: #e32636;
+    /* Bright red text when changes are detected */
+}
 
-  /* Close Button */
+
+/* Close Button */
 .filter-actions .close-button {
-    background-color: #e8edf3; /* Same as Apply button */
+    background-color: #e8edf3;
+    /* Same as Apply button */
     color: #000;
-  }
+}
 
-  .filter-actions .close-button:hover {
+.filter-actions .close-button:hover {
     background-color: #949494;
-  }
-  
-  /* Apply Button */
-  .filter-actions .apply-button {
+}
+
+/* Apply Button */
+.filter-actions .apply-button {
     background-color: transparent;
-    color: #b3b7bd; /* Light gray text */
-  }
-  
-  .filter-actions .apply-button:hover {
+    color: #b3b7bd;
+    /* Light gray text */
+}
+
+.filter-actions .apply-button:hover {
     background-color: #d9e3eb;
-  }
-  
-  /* Red Button (for Apply when there are changes) */
-  .filter-actions .apply-button.red-button {
-    background-color: #e32636; /* Bright red background */
-    color: #fff; /* White text */
-  }
-  
-  .filter-actions .apply-button:hover {
-    background-color: #c51e2d; /* Darker red for hover */
-    color: #fff; /* White text */
-  }
-  
+}
+
+/* Red Button (for Apply when there are changes) */
+.filter-actions .apply-button.red-button {
+    background-color: #e32636;
+    /* Bright red background */
+    color: #fff;
+    /* White text */
+}
+
+.filter-actions .apply-button:hover {
+    background-color: #c51e2d;
+    /* Darker red for hover */
+    color: #fff;
+    /* White text */
+}

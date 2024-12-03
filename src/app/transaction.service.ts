@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'; 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 import { Observable, of } from 'rxjs';
@@ -25,19 +25,19 @@ export class TransactionService {
 
   getTransactions() {
     return this.http.get<Transaction[]>(this.transactionsUrl)
-    .pipe(
-      tap(() => console.log(`Fetched Transactions`)),
-      catchError(this.handleError<Transaction[]>('getHeroes', []))
-    );
+      .pipe(
+        tap(() => console.log(`Fetched Transactions`)),
+        catchError(this.handleError<Transaction[]>('getHeroes', []))
+      );
   }
 
 
-// Error handler
-private handleError<T>(operation = 'operation', result?: T) {
-  return (error: any): Observable<T> => {
-    console.error(`${operation} failed:`, error);
-    return of(result as T);
-  };
-}
+  // Error handler
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(`${operation} failed:`, error);
+      return of(result as T);
+    };
+  }
 
 }

@@ -715,6 +715,26 @@ export class InMemoryDataService implements InMemoryDbService {
         status: "Rejected",
         rejectionDescription: "Not enough balance"
     },
+    {
+      id: 43,
+        debitAccount: "0099924358",
+        accountName: "Car saver",
+        transactionAmount: "1.500",
+        transactionType: "FT",
+        initiatingChannel: "Internet banking",
+        transactionInitiationDate: "04122024",
+        referenceNumber: "O200927M24319096",
+        beneficiaryName: "Mustang",
+        beneficiaryIBAN: "BH65ABCD12301332247004",
+        beneficiaryBIC: "ABCCBHBM",
+        billerCode: "BPCCBHBM",
+        billerServiceCode: "BPCCPSPD001",
+        billerSubServiceCode: "TEST",
+        billerSubscriberType: "AN",
+        billerSubscriberIDNumber: "8047",
+        status: "Rejected",
+        rejectionDescription: "Not enough balance"
+    },
     ];
     return {transactions};
   }

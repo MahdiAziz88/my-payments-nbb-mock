@@ -1,16 +1,21 @@
 .my-payments-container {
   padding: 20px;
-  margin: 0 auto; /* Centers the container horizontally */
-  max-width: 800px; /* Restricts the width to a maximum */
-  width: 100%; /* Ensures it adapts to smaller screens */
-  box-sizing: border-box; /* Includes padding in the total width */
+  margin: 0 auto;
+  /* Centers the container horizontally */
+  max-width: 800px;
+  /* Restricts the width to a maximum */
+  width: 100%;
+  /* Ensures it adapts to smaller screens */
+  box-sizing: border-box;
+  /* Includes padding in the total width */
 }
 
 /* Container for Search and Filter Buttons */
 .search-filter-container {
   display: flex;
   align-items: center;
-  gap: 16px; /* Space between search and filter buttons */
+  gap: 16px;
+  /* Space between search and filter buttons */
   margin-bottom: 12px;
 }
 
@@ -21,7 +26,8 @@
   justify-content: center;
   padding: 10px 20px;
   height: 40px;
-  background-color: #e8edf3; /* Default background color */
+  background-color: #e8edf3;
+  /* Default background color */
   border: none;
   border-radius: 25px;
   cursor: pointer;
@@ -45,5 +51,6 @@
 
 /* Active Filter Button State */
 .filter-button.active {
-  background-color: #b3b8bd; /* Background color when filters are visible */
+  background-color: #b3b8bd;
+  /* Background color when filters are visible */
 }
