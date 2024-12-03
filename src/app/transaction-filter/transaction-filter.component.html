@@ -1,3 +1,4 @@
+<!-- Main Container -->
 <div class="filter-inputs-container">
   <div class="filter-inputs">
     <div class="date-filter">
@@ -5,11 +6,13 @@
       <input type="date" id="fromDate" [(ngModel)]="fromDate" (change)="checkChanges()">
     </div>
 
+    <!-- Date Range -->
     <div class="date-filter">
       <label for="toDate">To</label>
       <input type="date" id="toDate" [(ngModel)]="toDate" (change)="checkChanges()">
     </div>
 
+    <!-- Transaction Type -->
     <div class="type-filter">
       <label for="transactionType">Transaction Type</label>
       <select id="transactionType" [(ngModel)]="transactionType" (change)="checkChanges()">
@@ -23,24 +26,13 @@
 
   <!-- Action Buttons -->
   <div class="filter-actions">
-    <button
-      class="clear-button"
-      [class.red-text]="hasChanges"
-      (click)="clearFilter()"
-    >
+    <button class="clear-button" [class.red-text]="hasChanges" (click)="clearFilter()">
       Clear all
     </button>
-    <button
-      class="close-button"
-      (click)="closeFilters()"
-    >
+    <button class="close-button" (click)="closeFilters()">
       Close
     </button>
-    <button
-      class="apply-button"
-      [class.red-button]="hasChanges"
-      (click)="applyFilter()"
-    >
+    <button class="apply-button" [class.red-button]="hasChanges" (click)="applyFilter()">
       Apply
     </button>
   </div>

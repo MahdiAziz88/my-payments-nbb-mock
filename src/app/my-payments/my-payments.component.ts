@@ -14,10 +14,10 @@ export class MyPaymentsComponent {
   toggleFilters(): void {
     this.showFilters = !this.showFilters;
   }
-  
+
   closeFilters(): void {
     this.showFilters = false; // Close the filter component
-  }  
+  }
 
   // Updates the search term from the search bar
   onSearchTermChanged(term: string): void {

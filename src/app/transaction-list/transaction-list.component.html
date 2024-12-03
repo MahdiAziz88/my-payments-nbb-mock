@@ -1,20 +1,19 @@
+<!-- Main Container -->
 <div class="transaction-list">
+
   <!-- Display Dynamic Error Message -->
   <div *ngIf="errorMessage" class="error-message">
     <img src="/assets/images/no-transactions-img.jpg" alt="No Transactions Icon" />
     <h2>{{ errorMessage.title }}</h2>
-  <p>{{ errorMessage.subtitle }}</p>
+    <p>{{ errorMessage.subtitle }}</p>
   </div>
 
-  <!-- Existing Transaction List Logic -->
+  <!-- Transactions grouped by date List -->
   <div *ngIf="searchedTransactions.length > 0">
     <div *ngFor="let group of groupedTransactions" class="transaction-group">
       <h2 class="group-header">{{ group.date }}</h2>
       <div *ngFor="let transaction of group.transactions">
-        <app-transaction
-          [transaction]="transaction"
-          (click)="openTransactionDetails(transaction)"
-        ></app-transaction>
+        <app-transaction [transaction]="transaction" (click)="openTransactionDetails(transaction)"></app-transaction>
       </div>
     </div>
 
@@ -27,9 +26,6 @@
   </div>
 
   <!-- Transaction Details Modal -->
-  <app-transaction-details-modal
-    *ngIf="selectedTransaction"
-    [transaction]="selectedTransaction"
-    (close)="closeTransactionDetails()"
-  ></app-transaction-details-modal>
+  <app-transaction-details-modal *ngIf="selectedTransaction" [transaction]="selectedTransaction"
+    (close)="closeTransactionDetails()"></app-transaction-details-modal>
 </div>

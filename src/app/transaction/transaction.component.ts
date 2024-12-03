@@ -8,7 +8,7 @@ import { Transaction } from '../interfaces';
 })
 export class TransactionComponent implements OnInit {
 
-@Input() transaction!: Transaction; // Receives transaction from parent
+  @Input() transaction!: Transaction; // Receives transaction from parent
 
   constructor() { }
 

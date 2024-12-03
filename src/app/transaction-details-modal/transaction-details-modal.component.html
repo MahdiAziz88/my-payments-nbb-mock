@@ -1,21 +1,22 @@
+<!-- Modal Component HTML -->
 <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
+
       <!-- Modal Header -->
       <div class="modal-header">
         <div class="header-info-container">
+
           <!-- Type Circle -->
-          <div
-            class="type-circle"
-            [ngClass]="transaction?.transactionType || 'default'"
-          >
+          <div class="type-circle" [ngClass]="transaction?.transactionType || 'default'">
             {{ transaction?.transactionType || 'N/A' }}
           </div>
-      
+
           <!-- Details Section -->
           <div class="header-info">
             <p class="modal-title">From <b>{{ transaction?.accountName }}</b></p>
-            <p class="date">{{ transaction?.transactionInitiationDate }}</p>
+            <p class="date">{{ formattedDate }}</p>
+
             <!-- Status -->
             <div class="status">
               <span [ngClass]="transaction?.status ? transaction.status.toLowerCase() : 'unknown'">
@@ -24,13 +25,12 @@
             </div>
           </div>
         </div>
-      
+
         <!-- Close Button -->
         <button type="button" class="btn-close" aria-label="Close" (click)="onClose()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      
 
       <!-- Amount -->
       <div class="amount">
@@ -39,11 +39,14 @@
 
       <!-- Modal Body -->
       <div class="modal-body">
+
         <!-- Details Section -->
         <div class="detail">
           <div class="label">From Account Number</div>
           <div class="value">{{ transaction?.debitAccount }}</div>
         </div>
+
+        <!-- Only if rejected field -->
         <div class="detail" *ngIf="transaction?.status === 'Rejected'">
           <div class="label">Reason of Transaction Failure</div>
           <div class="value">{{ transaction?.rejectionDescription }}</div>
@@ -56,6 +59,8 @@
           <div class="label">Beneficiary Name</div>
           <div class="value">{{ transaction?.beneficiaryName }}</div>
         </div>
+
+        <!-- Non-Fawateer fields -->
         <div class="detail" *ngIf="transaction?.transactionType !== 'FT'">
           <div class="label">Beneficiary IBAN</div>
           <div class="value">{{ transaction?.beneficiaryIBAN }}</div>
@@ -64,6 +69,7 @@
           <div class="label">Beneficiary BIC</div>
           <div class="value">{{ transaction?.beneficiaryBIC }}</div>
         </div>
+
         <!-- Fawateer-specific fields (Hidden if null/empty) -->
         <div class="detail" *ngIf="transaction?.billerCode">
           <div class="label">Biller Code</div>
