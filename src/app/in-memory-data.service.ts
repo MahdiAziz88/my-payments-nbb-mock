@@ -667,17 +667,56 @@ export class InMemoryDataService implements InMemoryDbService {
         beneficiaryBIC: "BBKUBHBM",
         status: "Approved"
     },
+    {
+      id: 40,
+        debitAccount: "0312405625",
+        accountName: "Express saver",
+        transactionAmount: "32.500",
+        transactionType: "FP",
+        initiatingChannel: "Digital Banking",
+        transactionInitiationDate: "02122024",
+        referenceNumber: "O201006M24362029",
+        beneficiaryName: "Mahdi",
+        beneficiaryIBAN: "BH94AUBU01230001512740",
+        beneficiaryBIC: "AUBNOKBM",
+        status: "Pending"
+    },
+    {
+      id: 41,
+        debitAccount: "0778405625",
+        accountName: "Family saver",
+        transactionAmount: "13.200",
+        transactionType: "FA",
+        initiatingChannel: "Digital Banking",
+        transactionInitiationDate: "03122024",
+        referenceNumber: "O201006M24362029",
+        beneficiaryName: "Abdulla",
+        beneficiaryIBAN: "BH94NBBU0456001512740",
+        beneficiaryBIC: "NBBONKBM",
+        status: "Approved"
+    },
+    {
+      id: 42,
+        debitAccount: "0099924358",
+        accountName: "Business saver",
+        transactionAmount: "0.500",
+        transactionType: "FT",
+        initiatingChannel: "Internet banking",
+        transactionInitiationDate: "03122024",
+        referenceNumber: "O200927M24319096",
+        beneficiaryName: "Zakariya",
+        beneficiaryIBAN: "BH65ABCD12301332247004",
+        beneficiaryBIC: "ABCCBHBM",
+        billerCode: "BPCCBHBM",
+        billerServiceCode: "BPCCPSPD001",
+        billerSubServiceCode: "TEST",
+        billerSubscriberType: "AN",
+        billerSubscriberIDNumber: "8047",
+        status: "Rejected",
+        rejectionDescription: "Not enough balance"
+    },
     ];
     return {transactions};
-  }
-
-  // Overrides the genId method to ensure that a hero always has an id.
-  // If the heroes array is empty,
-  // the method below returns the initial number (11).
-  // if the heroes array is not empty, the method below returns the highest
-  // hero id + 1.
-  genId(transactions: Transaction[]): number {
-    return transactions.length > 0 ? Math.max(...transactions.map(transaction => transaction.id)) + 1 : 1;
   }
   
 }

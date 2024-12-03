@@ -101,12 +101,12 @@ export class TransactionListComponent implements OnInit, OnChanges {
       if (this.searchTerm.trim()) {
         const term = this.searchTerm.toLowerCase();
         filtered = filtered.filter(transaction => {
-          const beneficiaryName = transaction.beneficiaryName?.toLowerCase() || '';
+          const beneficiaryIBAN = transaction.beneficiaryIBAN?.toLowerCase() || '';
           const debitAccount = transaction.debitAccount?.toString() || '';
           const billerSubscriberIDNumber = transaction.billerSubscriberIDNumber?.toLowerCase() || '';
 
           return (
-            beneficiaryName.includes(term) ||
+            beneficiaryIBAN.includes(term) ||
             debitAccount.includes(term) ||
             billerSubscriberIDNumber.includes(term)
           );
@@ -179,13 +179,18 @@ export class TransactionListComponent implements OnInit, OnChanges {
   formatDate(date: Date): string {
     const today = new Date();
     const yesterday = new Date();
+    const tomorrow = new Date(); // just in case for upcoming payments 
+    tomorrow.setDate(today.getDate() + 1);
     yesterday.setDate(today.getDate() - 1);
 
     if (date.toDateString() === today.toDateString()) {
       return 'Today';
     } else if (date.toDateString() === yesterday.toDateString()) {
       return 'Yesterday';
-    } else {
+    } else if (date.toDateString() === tomorrow.toDateString()) {
+      return 'Tomorrow';
+    }
+     else {
       return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
         .toString()
         .padStart(2, '0')}/${date.getFullYear()}`;
