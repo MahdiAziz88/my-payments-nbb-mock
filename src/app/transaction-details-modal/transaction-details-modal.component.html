@@ -45,7 +45,10 @@
           <div class="label">From Account Number</div>
           <div class="value">{{ transaction?.debitAccount }}</div>
         </div>
-
+        <div class="detail">
+          <div class="label">Transaction Reference Number</div>
+          <div class="value">{{ transaction?.referenceNumber }}</div>
+        </div>
         <!-- Only if rejected field -->
         <div class="detail" *ngIf="transaction?.status === 'Rejected'">
           <div class="label">Reason of Transaction Failure</div>
@@ -86,6 +89,10 @@
         <div class="detail" *ngIf="transaction?.billerSubscriberType">
           <div class="label">Biller Subscriber Type</div>
           <div class="value">{{ transaction?.billerSubscriberType }}</div>
+        </div>
+        <div class="detail" *ngIf="transaction?.billerSubscriberIDNumber">
+          <div class="label">Biller Subscriber ID Number</div>
+          <div class="value">{{ transaction?.billerSubscriberIDNumber }}</div>
         </div>
       </div>
     </div>
