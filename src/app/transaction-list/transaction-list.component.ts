@@ -53,7 +53,6 @@ export class TransactionListComponent implements OnInit, OnChanges {
     let messageSubtitle = ''; // Subtitle for error message
     let filtered = [...this.transactions]; // Clone the transactions array for filtering
 
-    try {
       if (this.transactions.length === 0) {
         // If there are no transactions at all
         messageTitle = 'No Transactions Available';
@@ -121,14 +120,13 @@ export class TransactionListComponent implements OnInit, OnChanges {
         if (filtered.length === 0) {
           // If search filter finds nothing, show message
           messageTitle = 'No Transactions Found';
-          messageSubtitle = 'No Results, Please try again with a different keyword.';
+          messageSubtitle = 'No Results Please try again with different keyword.';
         }
       }
 
       if (filtered.length === 0 && !messageTitle) {
         // Handle case where no transactions match after all filters
-        messageTitle = 'No Transactions Found';
-        messageSubtitle = 'You do not have any transaction within the selected date range or the transaction type.';
+        messageTitle = 'You do not have any transaction within the selected date range or the transaction type';
       }
 
       // Update error message or filtered transactions
@@ -136,15 +134,6 @@ export class TransactionListComponent implements OnInit, OnChanges {
       this.searchedTransactions = filtered;
       this.currentPage = 1; // Reset pagination
       this.paginateTransactions();
-    } catch (error) {
-      // Catch unexpected errors and display a general error message
-      this.errorMessage = {
-        title: 'An Error Occurred',
-        subtitle: 'Something went wrong while applying the filters. Please try again later.'
-      };
-      this.searchedTransactions = [];
-      this.groupedTransactions = [];
-    }
   }
 
   sortTransactionsByDate(transactions: Transaction[]): Transaction[] {

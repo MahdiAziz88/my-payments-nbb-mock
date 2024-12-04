@@ -16,6 +16,7 @@
     <div class="status">
       <span [ngClass]="transaction.status.toLowerCase()">{{ transaction.status }}</span>
     </div>
-    <p class="amount">-{{ transaction.transactionAmount }}</p>
+    <!-- Decimal Pipe to get full amount -->
+    <p class="amount">-{{ transaction.transactionAmount | number:'1.3-3' }}</p>
   </div>
 </div>

@@ -2,5 +2,661 @@
 body, html {
     font-family: 'Fira Sans', Arial, sans-serif; /* Fallback to Arial */
   }
+  .my-payments-container {
+    padding: 20px;
+    margin: 0 auto;
+    /* Centers the container horizontally */
+    max-width: 800px;
+    /* Restricts the width to a maximum */
+    width: 100%;
+    /* Ensures it adapts to smaller screens */
+    box-sizing: border-box;
+    /* Includes padding in the total width */
+  }
+  
+  /* Container for Search and Filter Buttons */
+  .search-filter-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    /* Space between search and filter buttons */
+    margin-bottom: 12px;
+  }
+  
+  /* Filter Button */
+  .filter-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    height: 40px;
+    background-color: #e8edf3;
+    /* Default background color */
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Filter Button Icon */
+  .filter-button i {
+    font-size: 18px;
+    margin-right: 8px;
+    color: #5f5f5f;
+  }
+  
+  /* Hover State */
+  .filter-button:hover {
+    background-color: #d9e3eb;
+  }
+  
+  /* Active Filter Button State */
+  .filter-button.active {
+    background-color: #b3b8bd;
+    /* Background color when filters are visible */
+  }
+  .transaction-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1.5px solid #ddd;
+    /* Add borders around each transaction */
+    border-top: none;
+    /* Remove top border to stack seamlessly */
+    box-shadow: #555;
+    padding: 10px 20px;
+    background-color: #fff;
+    cursor: pointer;
+    /* Make the cursor indicate the transaction is clickable */
+  }
+  
+  /* Type Circle */
+  .type-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    /* White text */
+    margin-right: 10px;
+    /* Space between the circle and details */
+    float: left;
+    /* Ensures it aligns with the details */
+  }
+  
+  /* Specific Colors Based on Transaction Type */
+  .type-circle.FP {
+    background-color: #7c4182;
+    /* Fawri+ */
+  }
+  
+  .type-circle.FA {
+    background-color: #f88d2b;
+    /* Fawri */
+  }
+  
+  .type-circle.FT {
+    background-color: #00839b;
+    /* Fawateer */
+  }
+  
+  /* Default Color */
+  .type-circle {
+    background-color: #ccc;
+    /* Fallback for unknown types */
+  }
   
   
+  /* Keep the border on the last transaction */
+  .transaction-container:first-child {
+    border-top: 1px solid #ddd;
+    /* Ensure the first transaction has a top border */
+  }
+  
+  .icon {
+    margin-right: 10px;
+    /* Space between the icon and details */
+  }
+  
+  .icon img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    /* Circular icon */
+  }
+  
+  .details {
+    flex: 1;
+    /* Take up remaining space */
+  }
+  
+  .from,
+  .to {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .from b,
+  .to b {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .status-amount-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    /* Space between status and amount */
+  }
+  
+  .status {
+    text-align: center;
+    font-size: 12px;
+  }
+  
+  .status span {
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .status .approved {
+    background-color: #00884b;
+    color: #ffffff;
+  }
+  
+  .status .rejected {
+    background-color: #ba293a;
+    color: #ffffff;
+  }
+  
+  .status .pending {
+    background-color: #ecb02b;
+    color: #ffffff;
+  }
+  
+  .amount {
+    font-size: 16px;
+    font-weight: bold;
+    color: #bb2c3d;
+    text-align: right;
+    min-width: 75px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  /* Modal Dialog */
+.modal-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 600px;
+  width: 100%;
+  border-radius: 8px;
+  z-index: 1050;
+  background-color: #fff;
+}
+
+/* Flex container for the circle and details */
+.header-info-container {
+  display: flex;
+  align-items: center;
+  /* Align circle and details vertically */
+  gap: 1px;
+  /* Space between the circle and details */
+  flex: 1;
+  /* Allow the container to stretch */
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+}
+
+/* Type Circle */
+.type-circle {
+  width: 60px;
+  /* Increased size */
+  height: 60px;
+  /* Increased size */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  /* Slightly larger text */
+  font-weight: bold;
+  color: #fff;
+  /* White text */
+  flex-shrink: 0;
+  /* Prevent shrinking */
+}
+
+/* Specific Colors Based on Transaction Type */
+.type-circle.FP {
+  background-color: #7c4182;
+  /* Fawri+ */
+}
+
+.type-circle.FA {
+  background-color: #f88d2b;
+  /* Fawri */
+}
+
+.type-circle.FT {
+  background-color: #00839b;
+  /* Fawateer */
+}
+
+/* Default Fallback Color */
+.type-circle.default {
+  background-color: #ccc;
+  /* Neutral gray */
+}
+
+
+/* Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: none;
+  padding: 10px;
+}
+
+.modal-header .header-info {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+}
+
+.modal-header h5 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
+}
+
+/* Date */
+.header-info .date {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.modal-header .btn-close {
+  background: transparent;
+  border: none;
+  font-size: 36px;
+  color: #555;
+  cursor: pointer;
+}
+
+.modal-header .btn-close:hover {
+  color: #000;
+}
+
+.modal-status {
+  margin-top: 10px;
+}
+
+/* Amount */
+.modal-amount {
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+}
+
+/* Body */
+.modal-body {
+  padding: 20px;
+  padding-left: 20px;
+}
+
+/* Detail Rows */
+.detail {
+  padding: 10px 0;
+  border-bottom: 2px solid #d2d8dc;
+}
+
+.detail:last-child {
+  border-bottom: none;
+}
+
+.detail .label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.detail .value {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Filter Inputs Container */
+.filter-inputs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Spacing between inputs and actions */
+  margin-top: 16px;
+}
+
+/* Filter Inputs */
+.filter-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px; /* Spacing between individual filter inputs */
+  width: 100%; /* Ensure it spans the full width */
+}
+
+.date-filter,
+.type-filter {
+  flex: 1; /* Make each filter input stretch equally */
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.date-filter label,
+.type-filter label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+input[type="date"],
+select {
+  width: 100%; /* Make inputs take the full width of their container */
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+/* Filter Actions */
+.filter-actions {
+  display: flex;
+  gap: 12px; /* Spacing between buttons */
+  justify-content: flex-end; /* Align buttons to the right */
+  margin-top: 16px; /* Add spacing above the buttons */
+}
+
+
+
+.filter-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: bold;
+}
+
+/* Clear Button */
+.filter-actions .clear-button {
+  background-color: transparent;
+  color: #b3b7bd;
+  /* Light gray text */
+}
+
+.filter-actions .clear-button:hover {
+  color: #e32636;
+  /* Dark gray text on hover */
+}
+
+.filter-actions .clear-button.red-text {
+  color: #e32636;
+  /* Bright red text when changes are detected */
+}
+
+
+/* Close Button */
+.filter-actions .close-button {
+  background-color: #e8edf3;
+  /* Same as Apply button */
+  color: #000;
+}
+
+.filter-actions .close-button:hover {
+  background-color: #949494;
+}
+
+/* Apply Button */
+.filter-actions .apply-button {
+  background-color: transparent;
+  color: #b3b7bd;
+  /* Light gray text */
+}
+
+.filter-actions .apply-button:hover {
+  background-color: #d9e3eb;
+}
+
+/* Red Button (for Apply when there are changes) */
+.filter-actions .apply-button.red-button {
+  background-color: #e32636;
+  /* Bright red background */
+  color: #fff;
+  /* White text */
+}
+
+.filter-actions .apply-button:hover {
+  background-color: #c51e2d;
+  /* Darker red for hover */
+  color: #fff;
+  /* White text */
+}
+.transaction-group {
+  margin-bottom: 20px;
+}
+
+.group-header {
+  font-size: 14px;
+  color: #5b5e60;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+.transaction-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.details-section {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.from {
+  font-size: 14px;
+  color: #555;
+}
+
+.to {
+  font-size: 14px;
+  color: #777;
+}
+
+.status-amount-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.status-badge.approved {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.rejected {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.status-badge.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.transaction-amount {
+  font-size: 16px;
+  font-weight: bold;
+  color: #d9534f;
+}
+
+.load-more-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.load-more-button {
+  padding: 10px 24px; /* Adjust padding for a rounded shape */
+  background-color: #dde4e9; /* Light gray background */
+  border: none; /* Remove border */
+  border-radius: 25px; /* Fully rounded corners */
+  cursor: pointer;
+  font-size: 16px; /* Slightly larger font */
+  font-weight: bold; /* Bold text */
+  color: #000; /* Black text */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition on hover */
+}
+
+.load-more-button:hover {
+  background-color: #adadad; /* Slightly darker gray on hover */
+}
+
+
+.no-more-transactions {
+  font-size: 14px;
+  color: #666;
+  margin-top: 10px;
+}
+
+.error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 50px 0;
+  text-align: center;
+  color: #6c757d; /* Subtle gray text */
+}
+
+.error-message img {
+  width: 200px; /* Medium width for the image */
+  height: 200px; /* Medium height for the image */
+  margin-bottom: 16px;
+  object-fit: contain; /* Maintain aspect ratio */
+}
+
+
+.error-message h2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000; /* Primary text color */
+  margin-bottom: 8px; /* Space between title and subtitle */
+}
+
+.error-message p {
+  font-size: 14px;
+  font-weight: normal;
+  color: #6c757d; /* Subtle gray for subtitle */
+  margin: 0;
+  line-height: 1.5;
+}
+.search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin: 10px 0;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px 15px 10px 40px;
+  /* Add space for the icon */
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow */
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.search-bar input:focus {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  border-color: #5f5f5f;
+}
+
+.search-bar .search-button {
+  position: absolute;
+  left: 10px;
+  /* Adjust position to align within input padding */
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  color: #aaa;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-bar .search-button::before {
+  content: '\f002';
+  /* Font Awesome search icon */
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
+.search-bar .search-button:hover {
+  color: #5f5f5f;
+  /* Change icon color on hover */
+}

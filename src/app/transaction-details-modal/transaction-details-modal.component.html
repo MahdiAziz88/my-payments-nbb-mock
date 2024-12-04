@@ -18,10 +18,12 @@
             <p class="date">{{ formattedDate }}</p>
 
             <!-- Status -->
+             <div class="modal-status">
             <div class="status">
               <span [ngClass]="transaction?.status ? transaction.status.toLowerCase() : 'unknown'">
                 {{ transaction?.status || 'Unknown' }}
               </span>
+            </div>
             </div>
           </div>
         </div>
@@ -30,15 +32,17 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="onClose()">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
-
-      <!-- Amount -->
-      <div class="amount">
-        BHD - {{ transaction?.transactionAmount }}
-      </div>
+      </div> 
 
       <!-- Modal Body -->
       <div class="modal-body">
+
+        <!-- Amount with Decimal Pipe -->
+        <div class="detail">
+      <div class="modal-amount">
+        BHD - {{ transaction.transactionAmount | number:'1.3-3' }}
+      </div>
+      </div>
 
         <!-- Details Section -->
         <div class="detail">
@@ -62,38 +66,40 @@
           <div class="label">Beneficiary Name</div>
           <div class="value">{{ transaction?.beneficiaryName }}</div>
         </div>
-
         <!-- Non-Fawateer fields -->
-        <div class="detail" *ngIf="transaction?.transactionType !== 'FT'">
-          <div class="label">Beneficiary IBAN</div>
-          <div class="value">{{ transaction?.beneficiaryIBAN }}</div>
-        </div>
-        <div class="detail" *ngIf="transaction?.transactionType !== 'FT'">
-          <div class="label">Beneficiary BIC</div>
-          <div class="value">{{ transaction?.beneficiaryBIC }}</div>
-        </div>
-
+        <ng-container *ngIf="transaction?.transactionType !== 'FT'">
+          <div class="detail">
+            <div class="label">Beneficiary IBAN</div>
+            <div class="value">{{ transaction?.beneficiaryIBAN }}</div>
+          </div>
+          <div class="detail">
+            <div class="label">Beneficiary BIC</div>
+            <div class="value">{{ transaction?.beneficiaryBIC }}</div>
+          </div>
+        </ng-container>
         <!-- Fawateer-specific fields (Hidden if null/empty) -->
-        <div class="detail" *ngIf="transaction?.billerCode">
-          <div class="label">Biller Code</div>
-          <div class="value">{{ transaction?.billerCode }}</div>
-        </div>
-        <div class="detail" *ngIf="transaction?.billerServiceCode">
-          <div class="label">Biller Service Code</div>
-          <div class="value">{{ transaction?.billerServiceCode }}</div>
-        </div>
-        <div class="detail" *ngIf="transaction?.billerSubServiceCode">
-          <div class="label">Biller Sub Service Code</div>
-          <div class="value">{{ transaction?.billerSubServiceCode }}</div>
-        </div>
-        <div class="detail" *ngIf="transaction?.billerSubscriberType">
-          <div class="label">Biller Subscriber Type</div>
-          <div class="value">{{ transaction?.billerSubscriberType }}</div>
-        </div>
-        <div class="detail" *ngIf="transaction?.billerSubscriberIDNumber">
-          <div class="label">Biller Subscriber ID Number</div>
-          <div class="value">{{ transaction?.billerSubscriberIDNumber }}</div>
-        </div>
+        <ng-container *ngIf="transaction?.transactionType == 'FT'">
+          <div class="detail">
+            <div class="label">Biller Code</div>
+            <div class="value">{{ transaction?.billerCode }}</div>
+          </div>
+          <div class="detail">
+            <div class="label">Biller Service Code</div>
+            <div class="value">{{ transaction?.billerServiceCode }}</div>
+          </div>
+          <div class="detail">
+            <div class="label">Biller Sub Service Code</div>
+            <div class="value">{{ transaction?.billerSubServiceCode }}</div>
+          </div>
+          <div class="detail">
+            <div class="label">Biller Subscriber Type</div>
+            <div class="value">{{ transaction?.billerSubscriberType }}</div>
+          </div>
+          <div class="detail">
+            <div class="label">Biller Subscriber ID Number</div>
+            <div class="value">{{ transaction?.billerSubscriberIDNumber }}</div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>
