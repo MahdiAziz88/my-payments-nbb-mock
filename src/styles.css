@@ -189,6 +189,22 @@ body, html {
     color: #ffffff;
   }
   
+  .status.approved span {
+    background-color: #00884b;
+    color: #ffffff;
+  }
+  
+  .status.rejected span {
+    background-color: #ba293a;
+    color: #ffffff;
+  }
+  
+  .status.pending span {
+    background-color: #ecb02b;
+    color: #ffffff;
+  }
+  
+  
   .amount {
     font-size: 16px;
     font-weight: bold;
@@ -197,18 +213,32 @@ body, html {
     min-width: 75px;
     font-family: Arial, Helvetica, sans-serif;
   }
-  /* Modal Dialog */
+/* Modal container (parent element) */
+.modal {
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  position: fixed; /* Ensure it stays in the viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1050;
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: to give the modal a backdrop */
+}
+
+/* Remove the line below the modal header */
+.modal-header {
+  border-bottom: none; /* Remove the default border */
+}
+
+/* Modal Dialog (child element) */
 .modal-dialog {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   max-width: 600px;
   width: 100%;
-  border-radius: 8px;
-  z-index: 1050;
-  background-color: #fff;
+  z-index: 1051; /* Ensure it's above the backdrop */
 }
+
 
 /* Flex container for the circle and details */
 .header-info-container {
@@ -273,69 +303,14 @@ body, html {
   /* Neutral gray */
 }
 
-
-/* Header */
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: none;
-  padding: 10px;
-}
-
-.modal-header .header-info {
-  display: flex;
-  flex-direction: column;
-  padding-left: 20px;
-}
-
-.modal-header h5 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: bold;
-  color: #000;
-}
-
-/* Date */
-.header-info .date {
-  font-size: 14px;
-  color: #666;
-  margin: 0;
-}
-
-.modal-header .btn-close {
-  background: transparent;
-  border: none;
-  font-size: 36px;
-  color: #555;
-  cursor: pointer;
-}
-
-.modal-header .btn-close:hover {
-  color: #000;
-}
-
-.modal-status {
-  margin-top: 10px;
-}
-
-/* Amount */
-.modal-amount {
-  font-size: 20px;
-  font-weight: bold;
-  color: #000;
-}
-
-/* Body */
-.modal-body {
-  padding: 20px;
-  padding-left: 20px;
-}
-
 /* Detail Rows */
+.detail strong {
+  font-weight: 600;
+}
+
 .detail {
-  padding: 10px 0;
-  border-bottom: 2px solid #d2d8dc;
+  border-bottom: 1px solid #ccd3d8;
+  padding-bottom: 10px;
 }
 
 .detail:last-child {
@@ -511,31 +486,6 @@ select {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-}
-
-.status-badge {
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-bottom: 5px;
-}
-
-.status-badge.approved {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.status-badge.rejected {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.status-badge.pending {
-  background-color: #fff3cd;
-  color: #856404;
 }
 
 .transaction-amount {
