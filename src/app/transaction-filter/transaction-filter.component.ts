@@ -10,10 +10,17 @@ export class TransactionFilterComponent {
   toDate: string = '';
   transactionType: string = 'All';
   hasChanges: boolean = false; // Tracks if any input has changed
+  showFilters: boolean = false; // Toggle state for filters
 
   @Output() filterApplied = new EventEmitter<{ fromDate: string; toDate: string; type: string }>();
   @Output() filterCleared = new EventEmitter<void>();
-  @Output() filterClosed = new EventEmitter<void>();
+  @Output() filterToggled = new EventEmitter<boolean>(); // Notify parent about the toggle state
+
+  // Toggle filter visibility
+  toggleFilters(): void {
+    this.showFilters = !this.showFilters;
+    this.filterToggled.emit(this.showFilters); // Notify parent
+  }
 
   // Emit the filter criteria when applying the filter
   applyFilter(): void {
@@ -32,11 +39,6 @@ export class TransactionFilterComponent {
     this.transactionType = 'All';
     this.filterCleared.emit();
     this.hasChanges = false; // Reset changes after clearing
-  }
-
-  // Notify parent to close the filter
-  closeFilters(): void {
-    this.filterClosed.emit();
   }
 
   // Check if any value has changed
