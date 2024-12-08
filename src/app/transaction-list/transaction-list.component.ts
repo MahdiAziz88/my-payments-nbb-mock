@@ -86,6 +86,19 @@ export class TransactionListComponent implements OnInit, OnChanges {
           this.groupedTransactions = [];
           return; // Exit if the date range is invalid
         }
+
+        // Validate that the date range does not exceed 1 month
+        const oneMonthLater = new Date(fromDate);
+        oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+        if (oneMonthLater < toDate) {
+          this.errorMessage = {
+            title: 'Invalid Date Range',
+            subtitle: 'Date range should not exceed 1 month.'
+          };
+          this.searchedTransactions = [];
+          this.groupedTransactions = [];
+          return; // Exit if the date range is invalid
+        }
   
         // Include transactions between "From" and "To" dates (inclusive)
         filtered = filtered.filter(transaction => {
