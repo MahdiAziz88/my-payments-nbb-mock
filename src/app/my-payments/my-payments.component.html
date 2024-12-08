@@ -14,10 +14,12 @@
 
   <!-- Filter Inputs Container (Below Search & Filter Container) -->
   <app-transaction-filter 
-    [hidden]="!showFilters" 
-    (filterApplied)="onFilterApplied($event)"
-    (filterCleared)="onFilterCleared()">
-  </app-transaction-filter>
+  [hidden]="!showFilters" 
+  (filterApplied)="onFilterApplied($event)"
+  (filterCleared)="onFilterCleared()"
+  (closeFilterClicked)="toggleFilterVisibility()">
+</app-transaction-filter>
+
 
   <!-- Transaction List -->
   <app-transaction-list 

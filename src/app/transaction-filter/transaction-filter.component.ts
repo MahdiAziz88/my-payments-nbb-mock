@@ -9,10 +9,11 @@ export class TransactionFilterComponent {
   fromDate: string = '';
   toDate: string = '';
   transactionType: string = 'All';
-  hasChanges: boolean = false; // Tracks if any input has changed
+  hasChanges: boolean = false;
 
   @Output() filterApplied = new EventEmitter<{ fromDate: string; toDate: string; type: string }>();
   @Output() filterCleared = new EventEmitter<void>();
+  @Output() closeFilterClicked = new EventEmitter<void>(); // New Output Event
 
   // Emit the filter criteria when applying the filter
   applyFilter(): void {
@@ -21,7 +22,7 @@ export class TransactionFilterComponent {
       toDate: this.toDate,
       type: this.transactionType
     });
-    this.hasChanges = false; // Reset changes after applying
+    this.hasChanges = false;
   }
 
   // Emit the reset event when clearing the filter
@@ -30,7 +31,12 @@ export class TransactionFilterComponent {
     this.toDate = '';
     this.transactionType = 'All';
     this.filterCleared.emit();
-    this.hasChanges = false; // Reset changes after clearing
+    this.hasChanges = false;
+  }
+
+  // Emit close filter event
+  closeFilter(): void {
+    this.closeFilterClicked.emit(); // Notify parent about closing
   }
 
   // Check if any value has changed
@@ -38,6 +44,6 @@ export class TransactionFilterComponent {
     this.hasChanges =
       !!this.fromDate ||
       !!this.toDate ||
-      this.transactionType !== 'All'; // Default type is 'All'
+      this.transactionType !== 'All';
   }
 }
