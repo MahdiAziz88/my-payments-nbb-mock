@@ -13,17 +13,12 @@
   </div>
 
   <!-- Filter Inputs Container (Below Search & Filter Container) -->
-  <app-transaction-filter 
-  [hidden]="!showFilters" 
-  (filterApplied)="onFilterApplied($event)"
-  (filterCleared)="onFilterCleared()"
-  (closeFilterClicked)="toggleFilterVisibility()">
-</app-transaction-filter>
+  <app-transaction-filter [hidden]="!showFilters" (filterApplied)="onFilterApplied($event)"
+    (filterCleared)="onFilterCleared()" (closeFilterClicked)="toggleFilterVisibility()">
+  </app-transaction-filter>
 
 
   <!-- Transaction List -->
-  <app-transaction-list 
-    [searchTerm]="searchTerm" 
-    [filterCriteria]="filterCriteria">
+  <app-transaction-list [searchTerm]="searchTerm" [filterCriteria]="filterCriteria">
   </app-transaction-list>
 </div>
