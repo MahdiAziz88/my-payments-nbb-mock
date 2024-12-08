@@ -32,6 +32,7 @@
   <!-- Filter Actions -->
   <div class="filter-actions">
     <button class="clear-button" [class.red-text]="hasChanges" (click)="clearFilter()">Clear all</button>
+    <button class="close-button" [class.red-text]="hasChanges" (click)="toggleFilters()">Close</button>
     <button class="apply-button" [class.red-button]="hasChanges" (click)="applyFilter()">Apply</button>
   </div>
 </div>
