@@ -41,11 +41,20 @@ export class TransactionListComponent implements OnInit, OnChanges {
     // Fetch transactions from the service
     this.transactionService.getTransactions().subscribe((data: Transaction[]) => {
       if (data.length === 0) {
-        // If no transactions are returned, reset lists
+        // No transactions available, set error message
+        this.errorMessage = {
+          title: 'No transactions available',
+          subtitle: 'There are no transactions to display.'
+        };
+  
+        // Reset lists
         this.transactions = [];
         this.searchedTransactions = [];
         this.groupedTransactions = [];
       } else {
+        // Transactions are available, reset error message
+        this.errorMessage = null;
+  
         // Set transactions unfiltered
         this.transactions = this.sortTransactionsByDate(data);
   
@@ -57,7 +66,8 @@ export class TransactionListComponent implements OnInit, OnChanges {
         this.paginateTransactions();
       }
     });
-  }  
+  }
+  
 
   filterTransactions(): void {
     // Reset any existing error messages

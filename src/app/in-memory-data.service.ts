@@ -781,11 +781,6 @@ export class InMemoryDataService implements InMemoryDbService {
         beneficiaryName: "Mustang",
         beneficiaryIBAN: "BH65ABCD12301332247004",
         beneficiaryBIC: "ABCCBHBM",
-        billerCode: "BPCCBHBM",
-        billerServiceCode: "BPCCPSPD001",
-        billerSubServiceCode: "TEST",
-        billerSubscriberType: "AN",
-        billerSubscriberIDNumber: "8047",
         status: "Pending",
     },
     {
@@ -800,11 +795,6 @@ export class InMemoryDataService implements InMemoryDbService {
         beneficiaryName: "Mustang",
         beneficiaryIBAN: "BH65ABCD12301332247004",
         beneficiaryBIC: "ABCCBHBM",
-        billerCode: "BPCCBHBM",
-        billerServiceCode: "BPCCPSPD001",
-        billerSubServiceCode: "TEST",
-        billerSubscriberType: "AN",
-        billerSubscriberIDNumber: "8047",
         status: "Pending",
     },
     ];
