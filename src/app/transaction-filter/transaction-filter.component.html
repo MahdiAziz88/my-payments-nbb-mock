@@ -1,17 +1,13 @@
-<!-- Filter Button -->
-<button class="filter-button" [ngClass]="{ 'active': showFilters }" (click)="toggleFilters()">
-  <i class="fas fa-sliders-h"></i> Filter
-</button>
-
-<!-- Filter Inputs (Visible only when `showFilters` is true) -->
-<div *ngIf="showFilters" class="filter-inputs-container">
+<!-- Filter Inputs -->
+<div class="filter-inputs-container">
   <div class="filter-inputs">
+    <!-- From Date Input -->
     <div class="date-filter">
       <label for="fromDate">From</label>
       <input type="date" id="fromDate" [(ngModel)]="fromDate" (change)="checkChanges()">
     </div>
 
-    <!-- Date Range Inputs -->
+    <!-- To Date Input -->
     <div class="date-filter">
       <label for="toDate">To</label>
       <input type="date" id="toDate" [(ngModel)]="toDate" (change)="checkChanges()">
@@ -32,7 +28,6 @@
   <!-- Filter Actions -->
   <div class="filter-actions">
     <button class="clear-button" [class.red-text]="hasChanges" (click)="clearFilter()">Clear all</button>
-    <button class="close-button" [class.red-text]="hasChanges" (click)="toggleFilters()">Close</button>
     <button class="apply-button" [class.red-button]="hasChanges" (click)="applyFilter()">Apply</button>
   </div>
 </div>

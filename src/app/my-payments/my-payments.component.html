@@ -3,17 +3,25 @@
 
   <!-- Search & Filter Container -->
   <div class="search-filter-container">
-
     <!-- Search Component -->
     <app-transaction-search (searchTermChanged)="onSearchTermChanged($event)"></app-transaction-search>
 
-    <!-- Filter Component -->
-    <app-transaction-filter (filterApplied)="onFilterApplied($event)"
-      (filterCleared)="onFilterCleared()"></app-transaction-filter>
+    <!-- Filter Button -->
+    <button class="filter-button" [ngClass]="{ 'active': showFilters }" (click)="toggleFilterVisibility()">
+      <i class="fas fa-sliders-h"></i> Filter
+    </button>
   </div>
 
-
+  <!-- Filter Inputs Container (Below Search & Filter Container) -->
+  <app-transaction-filter 
+    [hidden]="!showFilters" 
+    (filterApplied)="onFilterApplied($event)"
+    (filterCleared)="onFilterCleared()">
+  </app-transaction-filter>
 
   <!-- Transaction List -->
-  <app-transaction-list [searchTerm]="searchTerm" [filterCriteria]="filterCriteria"></app-transaction-list>
+  <app-transaction-list 
+    [searchTerm]="searchTerm" 
+    [filterCriteria]="filterCriteria">
+  </app-transaction-list>
 </div>
