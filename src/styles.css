@@ -133,11 +133,10 @@ html {
 
 .status-amount-container {
   display: flex;
-  align-items: center;
-  gap: 20px;
-  /* Space between status and amount */
+  align-items: center; /* Align items vertically in the center */
+  justify-content: flex-end; /* Align items horizontally to the right */
+  gap: 20px; /* Space between status and amount */
 }
-
 .status {
   text-align: center;
   font-size: 12px;
@@ -193,6 +192,8 @@ html {
   text-align: right;
   min-width: 75px;
   font-family: Arial, Helvetica, sans-serif;
+  line-height: 1; /* Ensure the text is vertically aligned */
+  margin: 0; /* Remove any default margin from the <p> tag */
 }
 
 /* Modal container (parent element) */
