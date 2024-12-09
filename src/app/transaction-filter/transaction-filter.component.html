@@ -1,22 +1,23 @@
 <!-- Filter Inputs -->
 <div class="filter-inputs-container">
   <div class="filter-inputs">
+
     <!-- From Date Input -->
     <div class="date-filter">
       <label for="fromDate">From</label>
-      <input type="date" id="fromDate" [(ngModel)]="fromDate" (change)="checkChanges()">
+      <input type="date" id="fromDate" [(ngModel)]="filterCriteria.fromDate" (change)="checkChanges()">
     </div>
 
     <!-- To Date Input -->
     <div class="date-filter">
       <label for="toDate">To</label>
-      <input type="date" id="toDate" [(ngModel)]="toDate" (change)="checkChanges()">
+      <input type="date" id="toDate" [(ngModel)]="filterCriteria.toDate" (change)="checkChanges()">
     </div>
 
     <!-- Transaction Type Filter -->
     <div class="type-filter">
       <label for="transactionType">Transaction Type</label>
-      <select id="transactionType" [(ngModel)]="transactionType" (change)="checkChanges()">
+      <select id="transactionType" [(ngModel)]="filterCriteria.type" (change)="checkChanges()">
         <option value="All">All</option>
         <option value="FA">Fawri Transfers</option>
         <option value="FP">Fawri+ Transfers</option>

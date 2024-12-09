@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-transaction-filter',
@@ -6,44 +6,33 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./transaction-filter.component.css']
 })
 export class TransactionFilterComponent {
-  fromDate: string = '';
-  toDate: string = '';
-  transactionType: string = 'All';
-  hasChanges: boolean = false;
-
+  @Input() filterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' };
   @Output() filterApplied = new EventEmitter<{ fromDate: string; toDate: string; type: string }>();
   @Output() filterCleared = new EventEmitter<void>();
-  @Output() closeFilterClicked = new EventEmitter<void>(); // New Output Event
+  @Output() closeFilterClicked = new EventEmitter<void>();
 
-  // Emit the filter criteria when applying the filter
+  hasChanges = false; // Tracks if any changes were made
+
+  // Emit the current filter criteria when the user applies filters
   applyFilter(): void {
-    this.filterApplied.emit({
-      fromDate: this.fromDate,
-      toDate: this.toDate,
-      type: this.transactionType
-    });
+    this.filterApplied.emit(this.filterCriteria);
     this.hasChanges = false;
   }
 
-  // Emit the reset event when clearing the filter
+  // Reset filters and emit a cleared event
   clearFilter(): void {
-    this.fromDate = '';
-    this.toDate = '';
-    this.transactionType = 'All';
+    this.filterCriteria = { fromDate: '', toDate: '', type: 'All' };
     this.filterCleared.emit();
     this.hasChanges = false;
   }
 
-  // Emit close filter event
+  // Notify parent to close the filter panel
   closeFilter(): void {
-    this.closeFilterClicked.emit(); // Notify parent about closing
+    this.closeFilterClicked.emit();
   }
 
-  // Check if any value has changed
+  // Detect changes to inputs and update the hasChanges flag
   checkChanges(): void {
-    this.hasChanges =
-      !!this.fromDate ||
-      !!this.toDate ||
-      this.transactionType !== 'All';
+    this.hasChanges = !!this.filterCriteria.fromDate || !!this.filterCriteria.toDate || this.filterCriteria.type !== 'All';
   }
 }

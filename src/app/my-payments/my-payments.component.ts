@@ -6,32 +6,27 @@ import { Component } from '@angular/core';
   styleUrls: ['./my-payments.component.css']
 })
 export class MyPaymentsComponent {
-  searchTerm = '';
-  filterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' };
-  showFilters: boolean = false; // Toggle state for the filter component
+  searchTerm = ''; // Search term for transaction search
+  filterCriteria = { fromDate: '', toDate: '', type: 'All' }; // Current filter criteria
+  showFilters = false; // Toggles the visibility of the filter component
 
-  // Toggle the visibility of the filter component
+  // Toggles filter visibility
   toggleFilterVisibility(): void {
     this.showFilters = !this.showFilters;
   }
 
-  // Updates the search term from the search bar
+  // Updates the search term
   onSearchTermChanged(term: string): void {
     this.searchTerm = term;
   }
 
-  // Updates the filter criteria from the filter component
+  // Receives updated filter criteria from the filter component
   onFilterApplied(criteria: { fromDate: string; toDate: string; type: string }): void {
-    this.filterCriteria = criteria;
+    this.filterCriteria = { ...criteria }; // Create a new object reference
   }
 
-  // Resets the filter criteria when clearing
+  // Resets the filter criteria when cleared
   onFilterCleared(): void {
-    this.filterCriteria = { fromDate: '', toDate: '', type: 'All' };
-  }
-
-  // Handles the filter toggle event from the child component
-  onFilterToggled(showFilters: boolean): void {
-    this.showFilters = showFilters; // Sync the visibility state
+    this.filterCriteria = { fromDate: '', toDate: '', type: 'All' }; // Reset the filters
   }
 }
