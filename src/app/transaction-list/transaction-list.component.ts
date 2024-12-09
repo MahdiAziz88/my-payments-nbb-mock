@@ -32,8 +32,10 @@ export class TransactionListComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     if (this.isInitialized) {
-      // Only execute the filter logic if the component is initialized
-      this.filterTransactions();
+      // Trigger filtering when searchTerm or filterCriteria changes
+      if (this.filterCriteria || this.searchTerm) {
+        this.filterTransactions(); // Reapply all filters
+      }
     }
   }
 
