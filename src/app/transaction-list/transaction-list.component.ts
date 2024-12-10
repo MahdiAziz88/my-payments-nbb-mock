@@ -1,16 +1,22 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { Transaction } from '../interfaces';
 import { TransactionService } from '../transaction.service';
 
 @Component({
   selector: 'app-transaction-list',
   templateUrl: './transaction-list.component.html',
-  styleUrls: ['./transaction-list.component.css']
+  styleUrls: ['./transaction-list.component.css'],
 })
 export class TransactionListComponent implements OnInit, OnChanges {
   transactions: Transaction[] = []; // Stores all transactions
   groupedTransactions: { date: string; transactions: Transaction[] }[] = []; // Transactions grouped by date
-  searchedTransactions: Transaction[] = []; // Transactions after applying filters
+  searchedTransactions: Transaction[] = []; // Transactions after applying search
   currentPage = 1; // Current page for pagination
   itemsPerPage = 5; // Number of items per page
 
@@ -20,9 +26,10 @@ export class TransactionListComponent implements OnInit, OnChanges {
   isInitialized = false; // Track initialization status because ngonchange gets called on nginit for some reason
 
   @Input() searchTerm = ''; // Search term input from parent component
-  @Input() filterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' }; // Filter criteria from parent component
+  @Input() filterCriteria: { fromDate: string; toDate: string; type: string } =
+    { fromDate: '', toDate: '', type: 'All' }; // Filter criteria from parent component
 
-  constructor(private transactionService: TransactionService) { }
+  constructor(private transactionService: TransactionService) {}
 
   ngOnInit(): void {
     // Fetch transactions when the component initializes
@@ -30,149 +37,184 @@ export class TransactionListComponent implements OnInit, OnChanges {
     this.isInitialized = true; // Mark component as initialized to avoid ngchanges from fetching transactions again
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (this.isInitialized) {
       // Trigger filtering when searchTerm or filterCriteria changes
-      if (this.filterCriteria || this.searchTerm) {
+      if (changes.filterCriteria) {
         this.filterTransactions(); // Reapply all filters
+      }
+      if (changes.searchTerm) {
+        this.searchTransactions(); // Perform a search
       }
     }
   }
 
   getTransactions(): void {
     // Fetch transactions from the service
-    this.transactionService.getTransactions().subscribe((data: Transaction[]) => {
-      if (data.length === 0) {
-        // No transactions available, set error message
-        this.errorMessage = {
-          title: 'No transactions available',
-          subtitle: 'There are no transactions to display.'
-        };
+    this.transactionService
+      .getTransactions()
+      .subscribe((data: Transaction[]) => {
+        if (data.length === 0) {
+          // No transactions available, set error message
+          this.errorMessage = {
+            title: 'No transactions available',
+            subtitle: 'There are no transactions to display.',
+          };
 
-        // Reset lists
-        this.transactions = [];
-        this.searchedTransactions = [];
-        this.groupedTransactions = [];
-      } else {
-        // Transactions are available, reset error message
-        this.errorMessage = null;
+          // Reset lists
+          this.transactions = [];
+          this.searchedTransactions = [];
+          this.groupedTransactions = [];
+        } else {
+          // Transactions are available, reset error message
+          this.errorMessage = null;
 
-        // Set transactions unfiltered
-        this.transactions = this.sortTransactionsByDate(data);
+          // Set transactions unfiltered
+          this.transactions = this.sortTransactionsByDate(data);
 
-        // Display unfiltered transactions initially
-        this.searchedTransactions = [...this.transactions];
+          // Display unfiltered transactions initially
+          this.searchedTransactions = [...this.transactions];
 
-        // Group and paginate transactions
-        this.currentPage = 1;
-        this.paginateTransactions();
-      }
-    });
+          // Group and paginate transactions
+          this.currentPage = 1;
+          this.paginateTransactions();
+        }
+      });
   }
-
 
   filterTransactions(): void {
     // Reset any existing error messages
     this.errorMessage = null;
 
     // Fetch transactions dynamically from the service
-    this.transactionService.getTransactions().subscribe((data: Transaction[]) => {
-      let filtered = [...data]; // Make a copy of the fetched transactions for filtering
+    this.transactionService
+      .getTransactions()
+      .subscribe((data: Transaction[]) => {
+        let filtered = [...data]; // Make a copy of the fetched transactions for filtering
 
-      // Filter by date range if both "From" and "To" dates are provided
-      if (this.filterCriteria.fromDate && this.filterCriteria.toDate) {
-        const fromDate = new Date(this.filterCriteria.fromDate);
-        const toDate = new Date(this.filterCriteria.toDate);
+        // Filter by date range if both "From" and "To" dates are provided
+        if (this.filterCriteria.fromDate && this.filterCriteria.toDate) {
+          const fromDate = new Date(this.filterCriteria.fromDate);
+          const toDate = new Date(this.filterCriteria.toDate);
 
-        // Normalize time to include the full day range
-        fromDate.setHours(0, 0, 0, 0); // Start of the "fromDate"
-        toDate.setHours(23, 59, 59, 999); // End of the "toDate"
+          // Normalize time to include the full day range
+          fromDate.setHours(0, 0, 0, 0); // Start of the "fromDate"
+          toDate.setHours(23, 59, 59, 999); // End of the "toDate"
 
-        // Validate that "From" date is not after "To" date
-        if (fromDate > toDate) {
-          this.errorMessage = {
-            title: 'Invalid Date Range',
-            subtitle: '"From" date cannot be after "To" date.'
-          };
-          this.searchedTransactions = [];
-          this.groupedTransactions = [];
-          return; // Exit if the date range is invalid
+          // Validate that "From" date is not after "To" date
+          if (fromDate > toDate) {
+            this.errorMessage = {
+              title: 'Invalid Date Range',
+              subtitle: '"From" date cannot be after "To" date.',
+            };
+            this.searchedTransactions = [];
+            this.groupedTransactions = [];
+            return; // Exit if the date range is invalid
+          }
+
+          // Validate that the date range does not exceed 1 month
+          const oneMonthLater = new Date(fromDate);
+          oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+          if (oneMonthLater < toDate) {
+            this.errorMessage = {
+              title: 'Invalid Date Range',
+              subtitle: 'Date range should not exceed 1 month.',
+            };
+            this.searchedTransactions = [];
+            this.groupedTransactions = [];
+            return; // Exit if the date range is invalid
+          }
+
+          // Include transactions between "From" and "To" dates (inclusive)
+          filtered = filtered.filter((transaction) => {
+            const transactionDate = this.parseDate(
+              transaction.transactionInitiationDate
+            );
+            return transactionDate >= fromDate && transactionDate <= toDate;
+          });
         }
 
-        // Validate that the date range does not exceed 1 month
-        const oneMonthLater = new Date(fromDate);
-        oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
-        if (oneMonthLater < toDate) {
-          this.errorMessage = {
-            title: 'Invalid Date Range',
-            subtitle: 'Date range should not exceed 1 month.'
-          };
-          this.searchedTransactions = [];
-          this.groupedTransactions = [];
-          return; // Exit if the date range is invalid
+        // Filter by transaction type if it's not "All"
+        if (this.filterCriteria.type !== 'All') {
+          filtered = filtered.filter(
+            (transaction) =>
+              transaction.transactionType === this.filterCriteria.type
+          );
         }
 
-        // Include transactions between "From" and "To" dates (inclusive)
-        filtered = filtered.filter(transaction => {
-          const transactionDate = this.parseDate(transaction.transactionInitiationDate);
-          return transactionDate >= fromDate && transactionDate <= toDate;
-        });
+        // If no transactions match the filters, set an error message (if none exists)
+        if (filtered.length === 0 && !this.errorMessage) {
+          this.errorMessage = {
+            title:
+              'You do not have any transaction within the selected date range or the transaction type',
+            subtitle: '',
+          };
+        }
+
+        // Update the filtered transactions
+        this.searchedTransactions = filtered;
+
+        // Sort the transactions by date (ensure the order is chronological or reverse)
+        this.sortTransactionsByDate(this.searchedTransactions);
+
+        // Reset pagination to the first page
+        this.currentPage = 1;
+
+        // Paginate the filtered transactions for display
+        this.paginateTransactions();
+      });
+  }
+
+  searchTransactions(): void {
+    this.errorMessage = null; // Reset any existing error messages
+
+    if (!this.searchTerm.trim()) {
+      //If the search term is empty, but there are filtered transactions, show the filtered transactions
+      if (this.searchedTransactions.length) {
+        this.searchedTransactions = [...this.searchedTransactions];
+      } else {
+        // If the search term is empty, show all transactions
+        this.searchedTransactions = [...this.transactions];
       }
+    }
+    // Perform a search if a search term is provided
+    if (this.searchTerm.trim()) {
+      const term = this.searchTerm.toLowerCase();
 
-      // Filter by transaction type if it's not "All"
-      if (this.filterCriteria.type !== 'All') {
-        filtered = filtered.filter(transaction => transaction.transactionType === this.filterCriteria.type);
-      }
-
-      // Perform a search if a search term is provided
-      if (this.searchTerm.trim()) {
-        const term = this.searchTerm.toLowerCase();
-
-        // Filter by IBAN, debit account, or biller subscriber ID (case-insensitive)
-        filtered = filtered.filter(transaction => {
-          const beneficiaryIBAN = transaction.beneficiaryIBAN?.toLowerCase() || '';
+      // Filter by IBAN, debit account, or biller subscriber ID (case-insensitive)
+      this.searchedTransactions = this.searchedTransactions.filter(
+        (transaction) => {
+          const beneficiaryIBAN =
+            transaction.beneficiaryIBAN?.toLowerCase() || '';
           const debitAccount = transaction.debitAccount?.toString() || '';
-          const billerSubscriberIDNumber = transaction.billerSubscriberIDNumber?.toLowerCase() || '';
+          const billerSubscriberIDNumber =
+            transaction.billerSubscriberIDNumber?.toLowerCase() || '';
 
           return (
             beneficiaryIBAN.includes(term) ||
             debitAccount.includes(term) ||
             billerSubscriberIDNumber.includes(term)
           );
-        });
-
-        // If no transactions match the search term, show an error message
-        if (filtered.length === 0) {
-          this.errorMessage = {
-            title: 'No Transactions Found',
-            subtitle: 'No Results Please try again with different keyword.'
-          };
         }
-      }
+      );
 
-      // If no transactions match the filters, set an error message (if none exists)
-      if (filtered.length === 0 && !this.errorMessage) {
+      // If no transactions match the search term, show an error message
+      if (this.searchedTransactions.length === 0) {
         this.errorMessage = {
-          title: 'You do not have any transaction within the selected date range or the transaction type',
-          subtitle: ''
+          title: 'No Transactions Found',
+          subtitle: 'No Results Please try again with different keyword.',
         };
       }
+    }
+    // Sort the transactions by date (ensure the order is chronological or reverse)
+    this.sortTransactionsByDate(this.searchedTransactions);
 
-      // Update the filtered transactions
-      this.searchedTransactions = filtered;
+    // Reset pagination to the first page
+    this.currentPage = 1;
 
-      // Sort the transactions by date (ensure the order is chronological or reverse)
-      this.sortTransactionsByDate(this.searchedTransactions);
-
-      // Reset pagination to the first page
-      this.currentPage = 1;
-
-      // Paginate the filtered transactions for display
-      this.paginateTransactions();
-    });
+    // Paginate the filtered transactions for display
+    this.paginateTransactions();
   }
-
-
 
   sortTransactionsByDate(transactions: Transaction[]): Transaction[] {
     return transactions.sort((a, b) => {
@@ -182,7 +224,6 @@ export class TransactionListComponent implements OnInit, OnChanges {
       return dateB - dateA; // Subtract dateA from dateB to sort descending
     });
   }
-
 
   paginateTransactions(): void {
     // Paginate transactions based on current page
@@ -195,7 +236,7 @@ export class TransactionListComponent implements OnInit, OnChanges {
   groupTransactionsByDate(transactions: Transaction[]): void {
     const groups: { [key: string]: Transaction[] } = {}; // Group transactions by date
 
-    transactions.forEach(transaction => {
+    transactions.forEach((transaction) => {
       const parsedDate = this.parseDate(transaction.transactionInitiationDate);
       const dateKey = this.formatDate(parsedDate); // Format date for grouping
       if (!groups[dateKey]) {
@@ -205,9 +246,9 @@ export class TransactionListComponent implements OnInit, OnChanges {
     });
 
     // Convert groups to an array of objects
-    this.groupedTransactions = Object.keys(groups).map(date => ({
+    this.groupedTransactions = Object.keys(groups).map((date) => ({
       date,
-      transactions: groups[date]
+      transactions: groups[date],
     }));
   }
 
@@ -234,7 +275,9 @@ export class TransactionListComponent implements OnInit, OnChanges {
     } else if (date.toDateString() === tomorrow.toDateString()) {
       return 'Tomorrow';
     } else {
-      return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
+      return `${date.getDate().toString().padStart(2, '0')}/${(
+        date.getMonth() + 1
+      )
         .toString()
         .padStart(2, '0')}/${date.getFullYear()}`;
     }
@@ -248,7 +291,9 @@ export class TransactionListComponent implements OnInit, OnChanges {
 
   hasMoreTransactions(): boolean {
     // Check if more transactions are available for pagination
-    return this.currentPage * this.itemsPerPage < this.searchedTransactions.length;
+    return (
+      this.currentPage * this.itemsPerPage < this.searchedTransactions.length
+    );
   }
 
   openTransactionDetails(transaction: Transaction): void {

@@ -27,7 +27,7 @@ export class TransactionService {
     return this.http.get<Transaction[]>(this.transactionsUrl)
       .pipe(
         tap(() => console.log(`Fetched Transactions`)),
-        catchError(this.handleError<Transaction[]>('getHeroes', []))
+        catchError(this.handleError<Transaction[]>('getTransactions', []))
       );
   }
 
