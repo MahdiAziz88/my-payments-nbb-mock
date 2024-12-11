@@ -20,12 +20,14 @@
 
   <!-- Filter Inputs Container (Below Search & Filter Container) -->
   <app-transaction-filter
-    *ngIf="showFilters"
-    [filterCriteria]="filterCriteria"
-    (filterApplied)="onFilterApplied($event)"
-    (filterCleared)="onFilterCleared()"
-    (closeFilterClicked)="toggleFilterVisibility()">
-  </app-transaction-filter>
+  *ngIf="showFilters"
+  [filterCriteria]="filterCriteria"
+  [tempFilterCriteria]="tempFilterCriteria"
+  (filterApplied)="onFilterApplied($event)"
+  (filterCleared)="onFilterCleared()"
+  (closeFilterClicked)="toggleFilterVisibility()">
+</app-transaction-filter>
+
 
   <!-- Transaction List -->
   <app-transaction-list 

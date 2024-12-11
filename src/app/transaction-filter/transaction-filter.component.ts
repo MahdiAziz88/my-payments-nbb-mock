@@ -1,39 +1,32 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-transaction-filter',
   templateUrl: './transaction-filter.component.html',
   styleUrls: ['./transaction-filter.component.css']
 })
-export class TransactionFilterComponent implements OnChanges {
+export class TransactionFilterComponent {
   @Input() filterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' };
+  @Input() tempFilterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' };
   @Output() filterApplied = new EventEmitter<{ fromDate: string; toDate: string; type: string }>();
   @Output() filterCleared = new EventEmitter<void>();
   @Output() closeFilterClicked = new EventEmitter<void>();
+  @Output() tempCriteriaChanged = new EventEmitter<{ fromDate: string; toDate: string; type: string }>();
 
-  newfilterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' };
-
-  hasChanges = false; // Tracks if any changes were made
-
-  // Detect changes to @Input() filterCriteria and update hasChanges
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.filterCriteria) {
-      console.log(changes.filterCriteria);
-      this.updateHasChanges(); // Update the `hasChanges` flag based on the current criteria
-    }
-  }
+  hasChanges = false;
+  canClear = false;
 
   // Emit the current filter criteria when the user applies filters
   applyFilter(): void {
-    this.filterApplied.emit(this.filterCriteria);
-    this.hasChanges = false; // Reset the change detection flag
+    this.filterApplied.emit(this.tempFilterCriteria);
+    this.hasChanges = false;
   }
 
   // Reset filters and emit a cleared event
   clearFilter(): void {
-    this.filterCriteria = { fromDate: '', toDate: '', type: 'All' }; // Reset filter inputs
+    this.tempFilterCriteria = { fromDate: '', toDate: '', type: 'All' };
     this.filterCleared.emit();
-    this.hasChanges = false; // Reset the change detection flag
+    this.updateHasChanges();
   }
 
   // Notify parent to close the filter panel
@@ -41,29 +34,25 @@ export class TransactionFilterComponent implements OnChanges {
     this.closeFilterClicked.emit();
   }
 
-  // Manually check for changes when inputs are modified
-  checkChanges(event: Event, inputElement: string): void {
-  const newValue = (event.target as HTMLInputElement).value;
-  console.log(this.filterCriteria);
-  // Perform actions based on the new value
-  if (inputElement === 'from') {
-  this.newfilterCriteria.fromDate = newValue;
-  } else if (inputElement === 'to') {
-  this.newfilterCriteria.toDate = newValue;
-  } else if (inputElement === 'type') {
-  this.newfilterCriteria.type = newValue;
-  }
+  // Sync changes in temp filter criteria to the parent
+  onTempFilterChange(): void {
+    this.tempCriteriaChanged.emit(this.tempFilterCriteria);
     this.updateHasChanges();
   }
 
-  // Update hasChanges flag based on the filter criteria values
-  private updateHasChanges(): void {
-    this.hasChanges =
-      this.filterCriteria.fromDate !== this.newfilterCriteria.fromDate || // Check if "fromDate" is set
-      this.filterCriteria.toDate !== this.newfilterCriteria.toDate || // Check if "toDate" is set
-      this.filterCriteria.type !== this.newfilterCriteria.type; // Check if "type" is not default
-    console.log(this.filterCriteria);
-    console.log(this.newfilterCriteria);
-  }
+  // Update hasChanges and canClear flags
+  updateHasChanges(): void {
+    const hasChangedFromDefaults =
+      this.tempFilterCriteria.fromDate !== '' ||
+      this.tempFilterCriteria.toDate !== '' ||
+      this.tempFilterCriteria.type !== 'All';
 
+    const hasChangedFromFilterCriteria =
+      this.filterCriteria.fromDate !== this.tempFilterCriteria.fromDate ||
+      this.filterCriteria.toDate !== this.tempFilterCriteria.toDate ||
+      this.filterCriteria.type !== this.tempFilterCriteria.type;
+
+    this.hasChanges = hasChangedFromFilterCriteria;
+    this.canClear = hasChangedFromDefaults;
+  }
 }
