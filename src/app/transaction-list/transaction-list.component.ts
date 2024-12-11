@@ -21,7 +21,7 @@ export class TransactionListComponent implements OnInit, OnChanges {
   itemsPerPage = 5; // Number of items per page
 
   selectedTransaction: Transaction | null = null; // Currently selected transaction for details
-  errorMessage: { title: string; subtitle: string } | null = null; // Error message for validation issues
+  errorMessage: { title: string; subtitle?: string } | null = null; // Error message for validation issues
 
   isInitialized = false; // Track initialization status because ngonchange gets called on nginit for some reason
 
@@ -41,6 +41,7 @@ export class TransactionListComponent implements OnInit, OnChanges {
     if (this.isInitialized) {
       // Trigger filtering when searchTerm or filterCriteria changes
       if (changes.filterCriteria) {
+        console.log('Filter Criteria Changed');
         this.filterTransactions(); // Reapply all filters
       }
       if (changes.searchTerm) {
@@ -69,15 +70,10 @@ export class TransactionListComponent implements OnInit, OnChanges {
           // Transactions are available, reset error message
           this.errorMessage = null;
 
+          this.transactions = data; // Set transactions to fetched data
+
           // Set transactions unfiltered
-          this.transactions = this.sortTransactionsByDate(data);
-
-          // Display unfiltered transactions initially
-          this.searchedTransactions = [...this.transactions];
-
-          // Group and paginate transactions
-          this.currentPage = 1;
-          this.paginateTransactions();
+          this.searchTransactions();
         }
       });
   }
@@ -107,7 +103,7 @@ export class TransactionListComponent implements OnInit, OnChanges {
               title: 'Invalid Date Range',
               subtitle: '"From" date cannot be after "To" date.',
             };
-            this.searchedTransactions = [];
+            this.transactions = [];
             this.groupedTransactions = [];
             return; // Exit if the date range is invalid
           }
@@ -120,7 +116,7 @@ export class TransactionListComponent implements OnInit, OnChanges {
               title: 'Invalid Date Range',
               subtitle: 'Date range should not exceed 1 month.',
             };
-            this.searchedTransactions = [];
+            this.transactions = [];
             this.groupedTransactions = [];
             return; // Exit if the date range is invalid
           }
@@ -146,22 +142,18 @@ export class TransactionListComponent implements OnInit, OnChanges {
         if (filtered.length === 0 && !this.errorMessage) {
           this.errorMessage = {
             title:
-              'You do not have any transaction within the selected date range or the transaction type',
-            subtitle: '',
+              'You do not have any transaction within the selected date range or the transaction type'
           };
+          this.transactions = [];
+            this.groupedTransactions = [];
+            return; // Exit if no transactions match the filters
         }
 
         // Update the filtered transactions
-        this.searchedTransactions = filtered;
+        this.transactions = filtered;
 
-        // Sort the transactions by date (ensure the order is chronological or reverse)
-        this.sortTransactionsByDate(this.searchedTransactions);
-
-        // Reset pagination to the first page
-        this.currentPage = 1;
-
-        // Paginate the filtered transactions for display
-        this.paginateTransactions();
+        // this.searchTransactions(); // Perform a search if a search term is provided        // Sort the transactions by date (ensure the order is chronological or reverse)
+        this.searchTransactions();
       });
   }
 
@@ -169,20 +161,14 @@ export class TransactionListComponent implements OnInit, OnChanges {
     this.errorMessage = null; // Reset any existing error messages
 
     if (!this.searchTerm.trim()) {
-      //If the search term is empty, but there are filtered transactions, show the filtered transactions
-      if (this.searchedTransactions.length) {
-        this.searchedTransactions = [...this.searchedTransactions];
-      } else {
-        // If the search term is empty, show all transactions
-        this.searchedTransactions = [...this.transactions];
-      }
+      this.searchedTransactions = [...this.transactions];
     }
     // Perform a search if a search term is provided
-    if (this.searchTerm.trim()) {
+    else {
       const term = this.searchTerm.toLowerCase();
 
       // Filter by IBAN, debit account, or biller subscriber ID (case-insensitive)
-      this.searchedTransactions = this.searchedTransactions.filter(
+      this.searchedTransactions = this.transactions.filter(
         (transaction) => {
           const beneficiaryIBAN =
             transaction.beneficiaryIBAN?.toLowerCase() || '';

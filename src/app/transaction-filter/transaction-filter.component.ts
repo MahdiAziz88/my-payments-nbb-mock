@@ -11,11 +11,14 @@ export class TransactionFilterComponent implements OnChanges {
   @Output() filterCleared = new EventEmitter<void>();
   @Output() closeFilterClicked = new EventEmitter<void>();
 
+  newfilterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' };
+
   hasChanges = false; // Tracks if any changes were made
 
   // Detect changes to @Input() filterCriteria and update hasChanges
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.filterCriteria) {
+      console.log(changes.filterCriteria);
       this.updateHasChanges(); // Update the `hasChanges` flag based on the current criteria
     }
   }
@@ -39,15 +42,28 @@ export class TransactionFilterComponent implements OnChanges {
   }
 
   // Manually check for changes when inputs are modified
-  checkChanges(): void {
+  checkChanges(event: Event, inputElement: string): void {
+  const newValue = (event.target as HTMLInputElement).value;
+  console.log(this.filterCriteria);
+  // Perform actions based on the new value
+  if (inputElement === 'from') {
+  this.newfilterCriteria.fromDate = newValue;
+  } else if (inputElement === 'to') {
+  this.newfilterCriteria.toDate = newValue;
+  } else if (inputElement === 'type') {
+  this.newfilterCriteria.type = newValue;
+  }
     this.updateHasChanges();
   }
 
   // Update hasChanges flag based on the filter criteria values
   private updateHasChanges(): void {
     this.hasChanges =
-      !!this.filterCriteria.fromDate || // Check if "fromDate" is set
-      !!this.filterCriteria.toDate || // Check if "toDate" is set
-      this.filterCriteria.type !== 'All'; // Check if "type" is not default
+      this.filterCriteria.fromDate !== this.newfilterCriteria.fromDate || // Check if "fromDate" is set
+      this.filterCriteria.toDate !== this.newfilterCriteria.toDate || // Check if "toDate" is set
+      this.filterCriteria.type !== this.newfilterCriteria.type; // Check if "type" is not default
+    console.log(this.filterCriteria);
+    console.log(this.newfilterCriteria);
   }
+
 }
