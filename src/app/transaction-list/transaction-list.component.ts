@@ -17,6 +17,7 @@ export class TransactionListComponent implements OnInit, OnChanges {
   transactions: Transaction[] = []; // Stores all transactions
   groupedTransactions: { date: string; transactions: Transaction[] }[] = []; // Transactions grouped by date
   searchedTransactions: Transaction[] = []; // Transactions after applying search
+  searchResults: Transaction[] = []; // Transactions after applying search
   currentPage = 1; // Current page for pagination
   itemsPerPage = 5; // Number of items per page
 
@@ -29,7 +30,7 @@ export class TransactionListComponent implements OnInit, OnChanges {
   @Input() filterCriteria: { fromDate: string; toDate: string; type: string } =
     { fromDate: '', toDate: '', type: 'All' }; // Filter criteria from parent component
 
-  constructor(private transactionService: TransactionService) {}
+  constructor(private transactionService: TransactionService) { }
 
   ngOnInit(): void {
     // Fetch transactions when the component initializes
@@ -153,6 +154,8 @@ export class TransactionListComponent implements OnInit, OnChanges {
 
         // Update the filtered transactions
         this.searchedTransactions = filtered;
+        this.searchResults = [...this.searchedTransactions]; // Reset search results
+
 
         // Sort the transactions by date (ensure the order is chronological or reverse)
         this.sortTransactionsByDate(this.searchedTransactions);
@@ -168,53 +171,46 @@ export class TransactionListComponent implements OnInit, OnChanges {
   searchTransactions(): void {
     this.errorMessage = null; // Reset any existing error messages
 
+    // If the search term is empty, show the filtered transactions
     if (!this.searchTerm.trim()) {
-      //If the search term is empty, but there are filtered transactions, show the filtered transactions
-      if (this.searchedTransactions.length) {
-        this.searchedTransactions = [...this.searchedTransactions];
-      } else {
-        // If the search term is empty, show all transactions
-        this.searchedTransactions = [...this.transactions];
-      }
-    }
-    // Perform a search if a search term is provided
-    if (this.searchTerm.trim()) {
+      this.searchResults = [...this.searchedTransactions];
+    } else {
+      // Perform a search if a search term is provided
       const term = this.searchTerm.toLowerCase();
 
       // Filter by IBAN, debit account, or biller subscriber ID (case-insensitive)
-      this.searchedTransactions = this.searchedTransactions.filter(
-        (transaction) => {
-          const beneficiaryIBAN =
-            transaction.beneficiaryIBAN?.toLowerCase() || '';
-          const debitAccount = transaction.debitAccount?.toString() || '';
-          const billerSubscriberIDNumber =
-            transaction.billerSubscriberIDNumber?.toLowerCase() || '';
+      this.searchResults = this.searchedTransactions.filter((transaction) => {
+        const beneficiaryIBAN = transaction.beneficiaryIBAN?.toLowerCase() || '';
+        const debitAccount = transaction.debitAccount?.toString() || '';
+        const billerSubscriberIDNumber =
+          transaction.billerSubscriberIDNumber?.toLowerCase() || '';
 
-          return (
-            beneficiaryIBAN.includes(term) ||
-            debitAccount.includes(term) ||
-            billerSubscriberIDNumber.includes(term)
-          );
-        }
-      );
+        return (
+          beneficiaryIBAN.includes(term) ||
+          debitAccount.includes(term) ||
+          billerSubscriberIDNumber.includes(term)
+        );
+      });
 
       // If no transactions match the search term, show an error message
-      if (this.searchedTransactions.length === 0) {
+      if (this.searchResults.length === 0) {
         this.errorMessage = {
           title: 'No Transactions Found',
-          subtitle: 'No Results Please try again with different keyword.',
+          subtitle: 'No Results Please try again with a different keyword.',
         };
       }
     }
+
     // Sort the transactions by date (ensure the order is chronological or reverse)
-    this.sortTransactionsByDate(this.searchedTransactions);
+    this.sortTransactionsByDate(this.searchResults);
 
     // Reset pagination to the first page
     this.currentPage = 1;
 
-    // Paginate the filtered transactions for display
-    this.paginateTransactions();
+    // Paginate the search results for display
+    this.paginateSearchResults();
   }
+
 
   sortTransactionsByDate(transactions: Transaction[]): Transaction[] {
     return transactions.sort((a, b) => {
@@ -232,6 +228,14 @@ export class TransactionListComponent implements OnInit, OnChanges {
     const paginatedTransactions = this.searchedTransactions.slice(start, end);
     this.groupTransactionsByDate(paginatedTransactions); // Group paginated transactions by date
   }
+
+  paginateSearchResults(): void {
+    const start = 0;
+    const end = this.currentPage * this.itemsPerPage;
+    const paginatedTransactions = this.searchResults.slice(start, end);
+    this.groupTransactionsByDate(paginatedTransactions);
+  }
+
 
   groupTransactionsByDate(transactions: Transaction[]): void {
     const groups: { [key: string]: Transaction[] } = {}; // Group transactions by date
