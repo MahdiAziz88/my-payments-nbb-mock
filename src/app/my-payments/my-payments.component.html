@@ -22,6 +22,7 @@
   <app-transaction-filter
     *ngIf="showFilters"
     [filterCriteria]="filterCriteria"
+    [tempFilterCriteria]="tempFilterCriteria"
     (filterApplied)="onFilterApplied($event)"
     (filterCleared)="onFilterCleared()"
     (closeFilterClicked)="toggleFilterVisibility()">

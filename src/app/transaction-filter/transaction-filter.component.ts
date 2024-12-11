@@ -7,31 +7,34 @@ import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from
 })
 export class TransactionFilterComponent implements OnChanges {
   @Input() filterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' };
+  @Input() tempFilterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' };
   @Output() filterApplied = new EventEmitter<{ fromDate: string; toDate: string; type: string }>();
   @Output() filterCleared = new EventEmitter<void>();
   @Output() closeFilterClicked = new EventEmitter<void>();
-
-  newfilterCriteria: { fromDate: string; toDate: string; type: string } = { fromDate: '', toDate: '', type: 'All' };
 
   hasChanges = false; // Tracks if any changes were made
 
   // Detect changes to @Input() filterCriteria and update hasChanges
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.filterCriteria) {
-      console.log(changes.filterCriteria);
       this.updateHasChanges(); // Update the `hasChanges` flag based on the current criteria
     }
   }
 
   // Emit the current filter criteria when the user applies filters
   applyFilter(): void {
-    this.filterApplied.emit(this.filterCriteria);
-    this.hasChanges = false; // Reset the change detection flag
+    if (this.hasChanges) {
+      // Emit only if changes exist between tempFilterCriteria and filterCriteria
+      this.filterCriteria = { ...this.tempFilterCriteria }; // Update the filterCriteria with the new values
+      this.filterApplied.emit(this.filterCriteria); // Emit the updated criteria
+      this.hasChanges = false; // Reset the change detection flag
+    }
   }
 
   // Reset filters and emit a cleared event
   clearFilter(): void {
-    this.filterCriteria = { fromDate: '', toDate: '', type: 'All' }; // Reset filter inputs
+    this.tempFilterCriteria = { fromDate: '', toDate: '', type: 'All' }; // Reset tempFilterCriteria
+    this.filterCriteria = { ...this.tempFilterCriteria }; // Reset filterCriteria
     this.filterCleared.emit();
     this.hasChanges = false; // Reset the change detection flag
   }
@@ -41,29 +44,11 @@ export class TransactionFilterComponent implements OnChanges {
     this.closeFilterClicked.emit();
   }
 
-  // Manually check for changes when inputs are modified
-  checkChanges(event: Event, inputElement: string): void {
-  const newValue = (event.target as HTMLInputElement).value;
-  console.log(this.filterCriteria);
-  // Perform actions based on the new value
-  if (inputElement === 'from') {
-  this.newfilterCriteria.fromDate = newValue;
-  } else if (inputElement === 'to') {
-  this.newfilterCriteria.toDate = newValue;
-  } else if (inputElement === 'type') {
-  this.newfilterCriteria.type = newValue;
-  }
-    this.updateHasChanges();
-  }
-
   // Update hasChanges flag based on the filter criteria values
-  private updateHasChanges(): void {
+  updateHasChanges(): void {
     this.hasChanges =
-      this.filterCriteria.fromDate !== this.newfilterCriteria.fromDate || // Check if "fromDate" is set
-      this.filterCriteria.toDate !== this.newfilterCriteria.toDate || // Check if "toDate" is set
-      this.filterCriteria.type !== this.newfilterCriteria.type; // Check if "type" is not default
-    console.log(this.filterCriteria);
-    console.log(this.newfilterCriteria);
+      this.filterCriteria.fromDate !== this.tempFilterCriteria.fromDate || // Check if "fromDate" is different
+      this.filterCriteria.toDate !== this.tempFilterCriteria.toDate || // Check if "toDate" is different
+      this.filterCriteria.type !== this.tempFilterCriteria.type; // Check if "type" is different
   }
-
 }

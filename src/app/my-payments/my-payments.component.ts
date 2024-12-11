@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class MyPaymentsComponent {
   searchTerm = ''; // Search term for transaction search
+  tempFilterCriteria = { fromDate: '', toDate: '', type: 'All' }; // Temporary filter criteria
   filterCriteria = { fromDate: '', toDate: '', type: 'All' }; // Current filter criteria
   showFilters = false; // Toggles the visibility of the filter component
 
@@ -22,7 +23,7 @@ export class MyPaymentsComponent {
 
   // Receives updated filter criteria from the filter component
   onFilterApplied(criteria: { fromDate: string; toDate: string; type: string }): void {
-    this.filterCriteria = { ...criteria }; // Create a new object reference
+    this.filterCriteria = { ...criteria }; // Update filterCriteria only when emitted
   }
 
   // Resets the filter criteria when cleared
