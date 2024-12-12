@@ -18,7 +18,7 @@
     </div>
 
     <!-- Load More Button -->
-    <div class="load-more-container" *ngIf="hasMoreTransactions()">
+    <div class="load-more-container" *ngIf="!errorMessage && hasMoreTransactions()">
       <button class="load-more-button" (click)="loadMore()">Load More</button>
     </div>
 

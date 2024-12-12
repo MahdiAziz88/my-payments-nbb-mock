@@ -5,19 +5,19 @@
     <!-- From Date Input -->
     <div class="date-filter">
       <label for="fromDate">From</label>
-      <input type="date" id="fromDate" [(ngModel)]="filterCriteria.fromDate" (change)="checkChanges()">
+      <input type="date" id="fromDate" [(ngModel)]="tempFilterCriteria.fromDate" (change)="updateHasChanges()">
     </div>
 
     <!-- To Date Input -->
     <div class="date-filter">
       <label for="toDate">To</label>
-      <input type="date" id="toDate" [(ngModel)]="filterCriteria.toDate" (change)="checkChanges()">
+      <input type="date" id="toDate" [(ngModel)]="tempFilterCriteria.toDate" (change)="updateHasChanges()">
     </div>
 
     <!-- Transaction Type Filter -->
     <div class="type-filter">
       <label for="transactionType">Transaction Type</label>
-      <select id="transactionType" [(ngModel)]="filterCriteria.type" (change)="checkChanges()">
+      <select id="transactionType" [(ngModel)]="tempFilterCriteria.type" (change)="updateHasChanges()">
         <option value="All">All</option>
         <option value="FA">Fawri Transfers</option>
         <option value="FP">Fawri+ Transfers</option>
@@ -28,9 +28,12 @@
 
   <!-- Filter Actions -->
   <div class="filter-actions">
-    <button class="clear-button" [disabled]="!hasChanges"  [class.red-text]="hasChanges" (click)="clearFilter()">Clear all</button>
-    <button class="close-button" (click)="closeFilter()">Close</button>
-    <button class="apply-button" [disabled]="!hasChanges"  [class.red-button]="hasChanges" (click)="applyFilter()">Apply</button>
+    <!-- Clear All Button -->
+    <button class="clear-button" [disabled]="!canClear" [class.red-text]="canClear" (click)="clearFilter()">
+      Clear all
+    </button> <button class="close-button" (click)="closeFilter()">Close</button>
+    <button class="apply-button" [disabled]="!hasChanges" [class.red-button]="hasChanges"
+      (click)="applyFilter()">Apply</button>
   </div>
-  
+
 </div>
