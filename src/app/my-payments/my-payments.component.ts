@@ -14,6 +14,7 @@ export class MyPaymentsComponent {
   // Toggles filter visibility
   toggleFilterVisibility(): void {
     this.showFilters = !this.showFilters;
+    // Do not reset tempFilterCriteria when toggling, retain its current state
   }
 
   // Updates the search term
@@ -26,7 +27,6 @@ export class MyPaymentsComponent {
     this.filterCriteria = { ...criteria }; // Save the applied criteria
     this.tempFilterCriteria = { ...criteria }; // Synchronize temp criteria
   }
-  
 
   // Resets the filter criteria when cleared
   onFilterCleared(): void {
